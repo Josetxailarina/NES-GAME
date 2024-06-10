@@ -19,6 +19,8 @@ public class EnemyScript : MonoBehaviour
     private bool isFacingRight;
     private LanzadorSurikens lanzadorSurikens;
     private Vector3 startPosition; // Posición inicial
+    private bool moviendo=true;
+    public float fuerzaEmpuje;
 
     void Start()
     {
@@ -32,38 +34,43 @@ public class EnemyScript : MonoBehaviour
 
     void Update()
     {
-        //mirar al player
-        bool shouldFaceRight = samurai.transform.position.x > transform.position.x;
-
-        if (shouldFaceRight != isFacingRight)
+        if (moviendo)
         {
-            isFacingRight = shouldFaceRight;
-            float yRotation = isFacingRight ? 180 : 0;
-            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, yRotation, transform.rotation.eulerAngles.z);
-        }
+            //mirar al player
+            bool shouldFaceRight = samurai.transform.position.x > transform.position.x;
 
-        // Mover el enemigo hacia adelante y hacia atrás
-        rb.velocity = new Vector3(speed * direction, rb.velocity.y);
+            if (shouldFaceRight != isFacingRight)
+            {
+                isFacingRight = shouldFaceRight;
+                float yRotation = isFacingRight ? 180 : 0;
+                transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, yRotation, transform.rotation.eulerAngles.z);
+            }
 
-        // Hacer que el enemigo salte cada X segundos
-        if (Time.time - jumpTimer >= jumpInterval)
-        {
-            rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode2D.Impulse);
-            jumpTimer = Time.time;
-        }
+            // Mover el enemigo hacia adelante y hacia atrás
 
-        // Cambiar la dirección cada X metros
-        if (Mathf.Abs(transform.position.x - startPosition.x) >= moveDistance)
-        {
-            direction *= -1; // Cambiar la dirección
-            startPosition = transform.position; // Actualizar la posición inicial
-        }
+            rb.velocity = new Vector3(speed * direction, rb.velocity.y);
 
-        // Hacer que el enemigo lance un suriken cada X segundos
-        if (Time.time - throwTimer >= throwInterval)
-        {
-            ThrowSuriken();
-            throwTimer = Time.time;
+
+            // Hacer que el enemigo salte cada X segundos
+            if (Time.time - jumpTimer >= jumpInterval)
+            {
+                rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode2D.Impulse);
+                jumpTimer = Time.time;
+            }
+
+            // Cambiar la dirección cada X metros
+            if (Mathf.Abs(transform.position.x - startPosition.x) >= moveDistance)
+            {
+                direction *= -1; // Cambiar la dirección
+                startPosition = transform.position; // Actualizar la posición inicial
+            }
+
+            // Hacer que el enemigo lance un suriken cada X segundos
+            if (Time.time - throwTimer >= throwInterval)
+            {
+                ThrowSuriken();
+                throwTimer = Time.time;
+            }
         }
     }
 
@@ -73,13 +80,24 @@ public class EnemyScript : MonoBehaviour
 
     }
 
-    public void TakeDamage()
+    public void TakeDamage(Vector2 direccionHit)
     {
+        print("Damage");
         vidaTotal -= 1;
+        StopAllCoroutines();
+        StartCoroutine(Damage(direccionHit));
         if (vidaTotal <= 0)
         {
             EnemyDie();
         }
+    }
+    IEnumerator Damage(Vector2 direccionHit)
+    {
+        moviendo = false;
+        rb.AddForce(direccionHit * fuerzaEmpuje,ForceMode2D.Impulse);
+        yield return new WaitForSeconds(0.6f);
+        moviendo = true;
+
     }
 
     void EnemyDie()

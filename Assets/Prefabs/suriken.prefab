@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 4715359923963778901}
   - component: {fileID: 3241504081729310673}
   - component: {fileID: 3679142296037119620}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: suriken
-  m_TagString: Untagged
+  m_TagString: Suriken
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

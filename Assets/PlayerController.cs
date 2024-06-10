@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     public GameObject panelFinal;
     public GameObject leaderboardObject;
     public AnimatorOverrideController[] animatorOverrideController;
-
+    public Vector2 direccionAtaque;
 
     public float jumpForce = 250f;
     public float moveForce = 10f;
@@ -170,7 +170,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void PerformJump()
+    public void PerformJump()
     {
         float actualJumpForce = jumpButtonHeld ? jumpForce : jumpForce * 0.7f;
         rb.velocity = new Vector2(rb.velocity.x, actualJumpForce);
@@ -180,6 +180,17 @@ public class PlayerController : MonoBehaviour
         jumpSound.Play();
         anim.SetBool("Jumping", true);
         
+    }
+    public void PerformJumpFull()
+    {
+        
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        tocandoSuelo = false;
+        coyoteTimeCounter = coyoteTime; // Resetear el tiempo de coyote
+        doubleJumpReady = false;
+        jumpSound.Play();
+        anim.SetBool("Jumping", true);
+
     }
     public void SpawnPlayer(Vector3 spawnPoint)
     {
@@ -245,17 +256,28 @@ public class PlayerController : MonoBehaviour
                 if (upPressed)
                 {
                     anim.runtimeAnimatorController = animatorOverrideController[1];
-
+                    direccionAtaque = Vector2.up;
                 }
                 else if (downPressed&&!tocandoSuelo)
                 {
                     anim.runtimeAnimatorController = animatorOverrideController[2];
+                    direccionAtaque = Vector2.down;
 
 
                 }
                 else
                 {
                     anim.runtimeAnimatorController = animatorOverrideController[0];
+                    if (mirandoIzqui)
+                    {
+                        direccionAtaque = Vector2.left;
+
+                    }
+                    else
+                    {
+                        direccionAtaque = Vector2.right;
+
+                    }
 
                 }
                 anim.SetTrigger("Attack");

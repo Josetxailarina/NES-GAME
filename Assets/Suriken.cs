@@ -11,19 +11,38 @@ public class Suriken : MonoBehaviour
     public bool lanzado;
     public float distanciaReset;
     private Vector3 posicionInicial;
+    private bool reflejado;
+    private Vector3 direccionReflejo;
     private void Start()
     {
         posicionInicial = transform.position;
         rb = GetComponent<Rigidbody2D>();
         samurai = GameObject.FindGameObjectWithTag("Samurai");
     }
-   
+    private void Update()
+    {
+        if (Vector3.Distance(samurai.transform.position,transform.position)>distanciaReset)
+        {
+            ResetSuriken();
+
+        }
+        
+    }
+    
     public void ResetSuriken()
     {
         transform.position = posicionInicial;
         rb.simulated = false;
         rb.velocity = Vector2.zero;
         lanzado = false;
+        rb.gravityScale = 1;
+
+    }
+    public void Reflejar(Vector2 direccionReflejo)
+    {
+        reflejado = true;
+        rb.gravityScale = 0;
+        rb.velocity = direccionReflejo*10;
 
     }
 
@@ -35,16 +54,13 @@ public class Suriken : MonoBehaviour
         rb.velocity = Vector2.zero;
         if (derecha)
         {
-            rb.AddForce(new Vector2(fuerzaSuriken, fuerzaSuriken*2),ForceMode2D.Impulse);
+            rb.AddForce(new Vector2(fuerzaSuriken*Random.Range(0.5f,1), fuerzaSuriken*2 * Random.Range(0.5f, 1)),ForceMode2D.Impulse);
         }
         else
         {
-            rb.AddForce(new Vector2(fuerzaSuriken*-1, fuerzaSuriken*2), ForceMode2D.Impulse);
+            rb.AddForce(new Vector2((fuerzaSuriken*-1)*Random.Range(0.5f, 1), fuerzaSuriken*2 * Random.Range(0.5f, 1)), ForceMode2D.Impulse);
 
         }
     }
-    private void OnBecameInvisible()
-    {
-        ResetSuriken();
-    }
+   
 }
