@@ -65,8 +65,30 @@
                 },
                 {
                     "name": "",
+                    "id": "5c433c4f-e3f6-432d-9a38-673c817c41a1",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "JUMP",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "6d86254f-3fa4-4bc3-ac51-04ed55d9ad89",
                     "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ATTACK",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5d1a641a-1dc6-4c6a-a752-a493108b9f46",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -108,6 +130,39 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "KEYBOARD",
+                    "id": "e6ef78fb-e772-4d7d-a8a9-7e16b33417ba",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MOVE",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "4f0f969a-86ce-44ae-96cb-df1bf0b656b7",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MOVE",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "fa648bb6-fe03-4cfd-83a3-b5b2664f3d47",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MOVE",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "1fe63db9-742c-43c1-bb2c-a282841456bf",
                     "path": "<Gamepad>/dpad/up",
@@ -120,8 +175,30 @@
                 },
                 {
                     "name": "",
+                    "id": "6889bd8c-5b39-4096-b81b-014aa1253042",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UP",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "6a5fb74f-16e3-4179-be1a-63ebfc97b588",
                     "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DOWN",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0e87df16-8fa9-4afe-ab7c-c6cab97246c2",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

@@ -15,7 +15,7 @@ public class SlashScript : MonoBehaviour
         hitSound.Play();
         if (playerController.direccionAtaque == Vector2.down)
         {
-            playerController.PerformJumpFull();
+            playerController.PerformJumpAttack();
         }
         if (collision.CompareTag("Suriken"))
         {

@@ -94,7 +94,7 @@ public class EnemyScript : MonoBehaviour
     IEnumerator Damage(Vector2 direccionHit)
     {
         moviendo = false;
-        rb.AddForce(direccionHit * fuerzaEmpuje,ForceMode2D.Impulse);
+        rb.velocity = direccionHit * fuerzaEmpuje;
         yield return new WaitForSeconds(0.6f);
         moviendo = true;
 

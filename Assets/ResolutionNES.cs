@@ -7,7 +7,7 @@ public class ResolutionNES : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-      // Screen.SetResolution(256,240,true);
+      Screen.SetResolution(256,240,false);
         Application.targetFrameRate = 60;
     }
 

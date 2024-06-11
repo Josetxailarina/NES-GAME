@@ -22,6 +22,7 @@ public class PiesCollider : MonoBehaviour
         controllerScript.anim.SetBool("Jumping",false);
         ultimaPosicionSegura = transform.position;
         aterrizajeSound.Play();
+        controllerScript.impulsoAttack = false;
 
     }
     private void OnTriggerExit2D(Collider2D collision)

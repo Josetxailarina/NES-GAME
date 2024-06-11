@@ -1,5 +1,7 @@
 
 
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -36,7 +38,7 @@ public class PlayerController : MonoBehaviour
     public float coyoteTimeCounter;
     private bool jumpButtonHeld;
     private float previousMoveInput = 0;
-    public bool doubleJumpReady;
+    public bool impulsoAttack;
     public bool mirandoIzqui;
     public AudioSource spawnSound;
     public AudioSource attackSound;
@@ -44,7 +46,9 @@ public class PlayerController : MonoBehaviour
     private float currentAttackCD;
     private bool upPressed;
     private bool downPressed;
-
+    public bool damaged;
+    public SpriteRenderer sprite;
+    public AudioSource damageSound;
     public bool tocandoSuelo { get; set; }
 
     private void Start()
@@ -115,12 +119,16 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        
-            // Movimiento horizontal
+
+        // Movimiento horizontal
+        if (!damaged)
+        {
             rb.velocity = new Vector2(moveInput * moveForce, rb.velocity.y);
 
-            // Aplicar gravedad adicional para una caída más rápida
-            if (rb.velocity.y < 0 || (!jumpButtonHeld && !doubleJumpReady))
+        }
+
+        // Aplicar gravedad adicional para una caída más rápida
+        if (rb.velocity.y < 0 || (!jumpButtonHeld && !impulsoAttack))
             {
                 rb.velocity -= gravityVector * multiplierFall * Time.deltaTime;
             }
@@ -146,18 +154,17 @@ public class PlayerController : MonoBehaviour
     }
     public void Jump(InputAction.CallbackContext callBack)
     {
-        if (callBack.performed)
+        if (callBack.performed&&!damaged)
         {
-            print("pulsado X");
             jumpButtonHeld = true; // Indicar que el botón de salto está presionado
-            if (doubleJumpReady)
-            {
-                PerformJump();
-            }
-            else
-            {
-                jumpBufferCounter = jumpBufferTime;
-            }
+            //if (doubleJumpReady)
+            //{
+            //    PerformJump();
+            //}
+            //else
+            //{
+             jumpBufferCounter = jumpBufferTime;
+            //}
         }
 
         if (callBack.canceled)
@@ -172,24 +179,30 @@ public class PlayerController : MonoBehaviour
 
     public void PerformJump()
     {
-        float actualJumpForce = jumpButtonHeld ? jumpForce : jumpForce * 0.7f;
-        rb.velocity = new Vector2(rb.velocity.x, actualJumpForce);
-        tocandoSuelo = false;
-        coyoteTimeCounter = coyoteTime; // Resetear el tiempo de coyote
-        doubleJumpReady = false;
-        jumpSound.Play();
-        anim.SetBool("Jumping", true);
+        if (!damaged)
+        {
+            float actualJumpForce = jumpButtonHeld ? jumpForce : jumpForce * 0.7f;
+            rb.velocity = new Vector2(rb.velocity.x, actualJumpForce);
+            tocandoSuelo = false;
+            coyoteTimeCounter = coyoteTime; // Resetear el tiempo de coyote
+            impulsoAttack = false;
+            jumpSound.Play();
+            anim.SetBool("Jumping", true); 
+        }
         
     }
-    public void PerformJumpFull()
+    public void PerformJumpAttack()
     {
-        
-        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        tocandoSuelo = false;
-        coyoteTimeCounter = coyoteTime; // Resetear el tiempo de coyote
-        doubleJumpReady = false;
-        jumpSound.Play();
-        anim.SetBool("Jumping", true);
+
+        if (!damaged)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            tocandoSuelo = false;
+            coyoteTimeCounter = coyoteTime; // Resetear el tiempo de coyote
+            impulsoAttack = true;
+            jumpSound.Play();
+            anim.SetBool("Jumping", true); 
+        }
 
     }
     public void SpawnPlayer(Vector3 spawnPoint)
@@ -203,7 +216,7 @@ public class PlayerController : MonoBehaviour
     public void ResetJump()
     {
         rb.velocity = new Vector2(rb.velocity.x, jumpForce * 0.7f);
-        doubleJumpReady = true;
+        impulsoAttack = true;
         
         //jumpParticles.Play();
 
@@ -249,7 +262,7 @@ public class PlayerController : MonoBehaviour
 
     public void Attack(InputAction.CallbackContext callBack)
     {
-        if (callBack.performed)
+        if (callBack.performed && !damaged)
         {
             if (currentAttackCD <= 0)
             {
@@ -315,6 +328,28 @@ public class PlayerController : MonoBehaviour
             downPressed = false;
 
         }
+    }
+   
+    public IEnumerator TakeDamage()
+    {
+        damageSound.Play(); 
+        damaged = true;
+        rb.velocity = new Vector2(-5, 0);
+        Time.timeScale = 0;
+        yield return new WaitForSecondsRealtime(0.1f);
+        Time.timeScale = 1;
+
+        yield return new WaitForSecondsRealtime(0.4f);
+        sprite.enabled = false;
+        damaged = false;
+        yield return new WaitForSecondsRealtime(0.2f);
+        sprite.enabled = true;
+        yield return new WaitForSecondsRealtime(0.2f);
+        sprite.enabled = false;
+        yield return new WaitForSecondsRealtime(0.2f);
+        sprite.enabled = true;
+        yield return new WaitForSecondsRealtime(0.2f);
+
     }
 
 }
