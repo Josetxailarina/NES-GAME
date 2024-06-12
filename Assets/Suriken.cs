@@ -36,14 +36,17 @@ public class Suriken : MonoBehaviour
         rb.velocity = Vector2.zero;
         lanzado = false;
         rb.gravityScale = 1;
-
+        reflejado = false;
+        int layerSamurai = LayerMask.NameToLayer("Samurai");
+        rb.excludeLayers &= ~(1 << layerSamurai);
     }
     public void Reflejar(Vector2 direccionReflejo)
     {
         reflejado = true;
         rb.gravityScale = 0;
         rb.velocity = direccionReflejo*10;
-
+        int layerSamurai = LayerMask.NameToLayer("Samurai");
+        rb.excludeLayers |= (1 << layerSamurai);
     }
 
     public void LanzarSuriken(Vector3 posicionSuriken,bool derecha)

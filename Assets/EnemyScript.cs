@@ -64,14 +64,14 @@ public class EnemyScript : MonoBehaviour
                 direction *= -1; // Cambiar la dirección
                 startPosition = transform.position; // Actualizar la posición inicial
             }
-
+        }
             // Hacer que el enemigo lance un suriken cada X segundos
             if (Time.time - throwTimer >= throwInterval)
             {
                 ThrowSuriken();
                 throwTimer = Time.time;
             }
-        }
+        
     }
 
     void ThrowSuriken()

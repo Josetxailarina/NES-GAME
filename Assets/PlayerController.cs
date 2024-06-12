@@ -8,48 +8,62 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    #region OTRAS
+    [Header("STATS")]
+    public int vidas = 3;
+    public Sprite[] vidasImgs;
+    public SpriteRenderer vidaSpriteRenderer;
+    #endregion
+    #region MOVIMIENTO
+    [Header("MOVIMIENTO")]
     public Rigidbody2D rb;
     private PlayerInput playerInput;
-    private Vector2 gravityVector;
-    public Animator anim;
-    public ParticleSystem slash;
-    public AudioSource jumpSound;
-    public GameObject cameraTarget;
-    private AudioSource playerAudio;
-    public AudioClip[] jumpScreams;
-    public GameObject skull;
-    public ParticleSystem jumpParticles;
-    public ParticleSystem particulasMuerte;
-    public GameObject panelStart;
-    public GameObject panelFinal;
-    public GameObject leaderboardObject;
-    public AnimatorOverrideController[] animatorOverrideController;
-    public Vector2 direccionAtaque;
+    public float moveForce = 10f;
+    private float moveInput;
+    private float previousMoveInput = 0;
+    public bool mirandoIzqui;
+    #endregion
+
+    #region SALTO
+    [Header("SALTO")]
 
     public float jumpForce = 250f;
-    public float moveForce = 10f;
     public float multiplierFall = 4f;
     public float jumpBufferTime = 0.2f;
     public float maxFallSpeed = -20f;
     public float coyoteTime = 0.1f;
-
-    private float moveInput;
     private float jumpBufferCounter;
     public float coyoteTimeCounter;
     private bool jumpButtonHeld;
-    private float previousMoveInput = 0;
+    public AudioSource jumpSound;
+    public bool tocandoSuelo { get; set; }
+    #endregion
+
+    #region ATAQUE
+    [Header("ATAQUE")]
+
+    public Animator anim;
+    public Vector2 direccionAtaque;
     public bool impulsoAttack;
-    public bool mirandoIzqui;
-    public AudioSource spawnSound;
     public AudioSource attackSound;
-    public float attackCD=0.5f;
+    public float attackCD = 0.5f;
     private float currentAttackCD;
     private bool upPressed;
     private bool downPressed;
+    #endregion
+
+    #region OTRAS
+    [Header("OTRAS")]
+
+    private Vector2 gravityVector;
+    public AnimatorOverrideController[] animatorOverrideController;
+    public AudioSource spawnSound;
     public bool damaged;
+    public bool parpadeando;
     public SpriteRenderer sprite;
     public AudioSource damageSound;
-    public bool tocandoSuelo { get; set; }
+    #endregion
+
 
     private void Start()
     {
@@ -58,7 +72,6 @@ public class PlayerController : MonoBehaviour
         gravityVector = new Vector2(0, -Physics2D.gravity.y);
         playerInput = GetComponent<PlayerInput>();
        anim = GetComponent<Animator>();
-        //playerAudio = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -83,7 +96,7 @@ public class PlayerController : MonoBehaviour
         }
 
             // Actualiza el animator solo si el estado de movimiento ha cambiado
-            if (moveInput != previousMoveInput)
+            if (moveInput != previousMoveInput&&!damaged)
             {
                 anim.SetBool("Running", moveInput != 0);
                 previousMoveInput = moveInput; // Actualiza el estado previo
@@ -147,11 +160,7 @@ public class PlayerController : MonoBehaviour
             }
         
     }
-    private void PlayRandomJumpAudio()
-    {
-        playerAudio.pitch = Random.Range(0.9f, 1.1f);
-        playerAudio.PlayOneShot(jumpScreams[Random.Range(0, jumpScreams.Length)]);
-    }
+    
     public void Jump(InputAction.CallbackContext callBack)
     {
         if (callBack.performed&&!damaged)
@@ -205,14 +214,7 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-    public void SpawnPlayer(Vector3 spawnPoint)
-    {
-        particulasMuerte.Play();
-        transform.position = spawnPoint;
-        particulasMuerte.Play();
-        spawnSound.Play();
-        rb.velocity = Vector3.zero;
-    }
+  
     public void ResetJump()
     {
         rb.velocity = new Vector2(rb.velocity.x, jumpForce * 0.7f);
@@ -227,34 +229,17 @@ public class PlayerController : MonoBehaviour
     {
         if (callBack.started)
         {
-            panelStart.SetActive(true);
-            leaderboardObject.transform.SetParent(panelStart.transform);
-            Time.timeScale = 0;
+            
 
         }
         else if (callBack.started  )
         {
-            ReanudarGame();
 
 
         }
 
     }
-    public void ReanudarGame()
-    {
-        
-        panelStart.SetActive(false);
-        panelFinal.SetActive(false);
-
-        Time.timeScale = 1;
-    }
-    public void ReiniciarScene()
-    {
-        
-        Time.timeScale = 1;
-
-        SceneManager.LoadScene(1);
-    }
+ 
     public void CerrarJuego()
     {
         Application.Quit();
@@ -330,25 +315,59 @@ public class PlayerController : MonoBehaviour
         }
     }
    
-    public IEnumerator TakeDamage()
+    public IEnumerator TakeDamage(Vector2 direccion)
     {
+        if (vidas>0)
+        {
+            vidas--;
+            vidaSpriteRenderer.sprite = vidasImgs[vidas];
+        }
+        else
+        {
+            print("Muerto");
+        }
+        
         damageSound.Play(); 
         damaged = true;
-        rb.velocity = new Vector2(-5, 0);
+        parpadeando = true;
+        rb.velocity = direccion*10;
         Time.timeScale = 0;
-        yield return new WaitForSecondsRealtime(0.1f);
+        yield return new WaitForSecondsRealtime(0.2f);
         Time.timeScale = 1;
 
-        yield return new WaitForSecondsRealtime(0.4f);
+        yield return new WaitForSecondsRealtime(0.2f);
         sprite.enabled = false;
         damaged = false;
-        yield return new WaitForSecondsRealtime(0.2f);
+
+        yield return new WaitForSecondsRealtime(0.1f);
+
         sprite.enabled = true;
-        yield return new WaitForSecondsRealtime(0.2f);
+        yield return new WaitForSecondsRealtime(0.1f);
         sprite.enabled = false;
-        yield return new WaitForSecondsRealtime(0.2f);
+        yield return new WaitForSecondsRealtime(0.1f);
         sprite.enabled = true;
-        yield return new WaitForSecondsRealtime(0.2f);
+        yield return new WaitForSecondsRealtime(0.1f);
+        sprite.enabled = false;
+        yield return new WaitForSecondsRealtime(0.1f);
+        sprite.enabled = true;
+        yield return new WaitForSecondsRealtime(0.1f);
+        sprite.enabled = false;
+        yield return new WaitForSecondsRealtime(0.1f);
+        sprite.enabled = true;
+        yield return new WaitForSecondsRealtime(0.1f);
+        sprite.enabled = false;
+        yield return new WaitForSecondsRealtime(0.1f);
+        sprite.enabled = true;
+        yield return new WaitForSecondsRealtime(0.1f);
+        sprite.enabled = false;
+        yield return new WaitForSecondsRealtime(0.1f);
+        sprite.enabled = true;
+        yield return new WaitForSecondsRealtime(0.1f);
+        sprite.enabled = false;
+        yield return new WaitForSecondsRealtime(0.1f);
+        sprite.enabled = true;
+        yield return new WaitForSecondsRealtime(0.1f);
+        parpadeando = false;
 
     }
 
