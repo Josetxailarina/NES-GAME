@@ -21,14 +21,22 @@ public class Suriken : MonoBehaviour
     }
     private void Update()
     {
-        if (Vector3.Distance(samurai.transform.position,transform.position)>distanciaReset)
+        if (Vector3.Distance(samurai.transform.position, transform.position) > distanciaReset)
         {
             ResetSuriken();
 
         }
-        
+
     }
-    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        print(collision.name);
+        if (collision.gameObject.CompareTag("NinjaM")&&reflejado)
+        {
+            collision.GetComponent<EnemyScript>().TakeDamage(rb.velocity.normalized);
+        }
+    }
+
     public void ResetSuriken()
     {
         transform.position = posicionInicial;
@@ -44,12 +52,12 @@ public class Suriken : MonoBehaviour
     {
         reflejado = true;
         rb.gravityScale = 0;
-        rb.velocity = direccionReflejo*10;
+        rb.velocity = direccionReflejo * 10;
         int layerSamurai = LayerMask.NameToLayer("Samurai");
         rb.excludeLayers |= (1 << layerSamurai);
     }
 
-    public void LanzarSuriken(Vector3 posicionSuriken,bool derecha)
+    public void LanzarSuriken(Vector3 posicionSuriken, bool derecha)
     {
         lanzado = true;
         transform.position = posicionSuriken;
@@ -57,13 +65,13 @@ public class Suriken : MonoBehaviour
         rb.velocity = Vector2.zero;
         if (derecha)
         {
-            rb.AddForce(new Vector2(fuerzaSuriken*Random.Range(0.5f,1), fuerzaSuriken*2 * Random.Range(0.5f, 1)),ForceMode2D.Impulse);
+            rb.AddForce(new Vector2(fuerzaSuriken * Random.Range(0.5f, 1), fuerzaSuriken * 2 * Random.Range(0.5f, 1)), ForceMode2D.Impulse);
         }
         else
         {
-            rb.AddForce(new Vector2((fuerzaSuriken*-1)*Random.Range(0.5f, 1), fuerzaSuriken*2 * Random.Range(0.5f, 1)), ForceMode2D.Impulse);
+            rb.AddForce(new Vector2((fuerzaSuriken * -1) * Random.Range(0.5f, 1), fuerzaSuriken * 2 * Random.Range(0.5f, 1)), ForceMode2D.Impulse);
 
         }
     }
-   
+
 }

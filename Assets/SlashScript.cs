@@ -9,17 +9,20 @@ public class SlashScript : MonoBehaviour
     public PlayerController playerController;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        animHit.transform.position = collision.transform.position;
-        animHit.transform.rotation = transform.rotation;
-        animHit.SetTrigger("Hit");
-        hitSound.Play();
+        
         if (playerController.direccionAtaque == Vector2.down)
         {
             playerController.PerformJumpAttack();
+
         }
         if (collision.CompareTag("Suriken"))
         {
+            animHit.transform.position = collision.transform.position;
+            animHit.transform.rotation = transform.rotation;
+            animHit.SetTrigger("Hit");
             collision.GetComponent<Suriken>().Reflejar(playerController.direccionAtaque);
+            hitSound.Play();
+
         }
         else if (collision.CompareTag("NinjaM"))
         {

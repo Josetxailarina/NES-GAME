@@ -10,7 +10,7 @@ public class EnemyScript : MonoBehaviour
     public int vidaTotal = 3;
     public float jumpInterval = 2.0f; // Tiempo entre saltos
     public float moveDistance = 5.0f; // Distancia que recorre antes de cambiar de dirección
-
+    public Animator damageEffectAnim;
     private Rigidbody2D rb;
     private float direction = 1.0f;
     private float jumpTimer;
@@ -21,7 +21,7 @@ public class EnemyScript : MonoBehaviour
     private Vector3 startPosition; // Posición inicial
     private bool moviendo=true;
     public float fuerzaEmpuje;
-
+    public AudioSource hitSound;
     void Start()
     {
         samurai = GameObject.FindGameObjectWithTag("Samurai");
@@ -84,6 +84,10 @@ public class EnemyScript : MonoBehaviour
     {
         print("Damage");
         vidaTotal -= 1;
+        damageEffectAnim.transform.position = transform.position;
+        damageEffectAnim.SetTrigger("Hit");
+        hitSound.Play();
+
         StopAllCoroutines();
         StartCoroutine(Damage(direccionHit));
         if (vidaTotal <= 0)
