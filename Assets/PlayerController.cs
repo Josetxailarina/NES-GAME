@@ -132,7 +132,7 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-
+        anim.SetFloat("Yvelocity",rb.velocity.y);
         // Movimiento horizontal
         if (!damaged)
         {

@@ -72,7 +72,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.05
+        time: 0.06666667
         value: 0
         inSlope: Infinity
         outSlope: Infinity
@@ -102,7 +102,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.13333334
+        time: 0.16666667
         value: 0
         inSlope: Infinity
         outSlope: Infinity
@@ -140,10 +140,10 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: 97d6d3ce8a4e7ba4489143557faa9f46, type: 3}
-    - time: 0.05
+      value: {fileID: 21300000, guid: 4c0807c7980426c4399f2e8d5b9d8da2, type: 3}
+    - time: 0.06666667
       value: {fileID: 21300000, guid: c750ca7c8182aa74bbc0854635633f0d, type: 3}
-    - time: 0.1
+    - time: 0.11666667
       value: {fileID: 21300000, guid: ef2f2536887fa2b4389d6acedfdac92e, type: 3}
     attribute: m_Sprite
     path: SlashEffect
@@ -213,7 +213,7 @@ AnimationClip:
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
     - {fileID: 21300000, guid: 2631f76d95cfbbd41839b1014c7feba5, type: 3}
-    - {fileID: 21300000, guid: 97d6d3ce8a4e7ba4489143557faa9f46, type: 3}
+    - {fileID: 21300000, guid: 4c0807c7980426c4399f2e8d5b9d8da2, type: 3}
     - {fileID: 21300000, guid: c750ca7c8182aa74bbc0854635633f0d, type: 3}
     - {fileID: 21300000, guid: ef2f2536887fa2b4389d6acedfdac92e, type: 3}
   m_AnimationClipSettings:
@@ -386,7 +386,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.05
+        time: 0.06666667
         value: 0
         inSlope: Infinity
         outSlope: Infinity
@@ -416,7 +416,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.13333334
+        time: 0.16666667
         value: 0
         inSlope: Infinity
         outSlope: Infinity

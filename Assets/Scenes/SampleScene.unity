@@ -993,7 +993,7 @@ Animator:
   m_GameObject: {fileID: 734878225}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 89939a5b08a841c4b85d3b3602091192, type: 2}
+  m_Controller: {fileID: 9100000, guid: 713bee6792357484294883286e63fb5f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1520,7 +1520,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: b373f64decb4ec64fae04a592eb98838, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.498
+  m_Volume: 0.355
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1629,10 +1629,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1137642994}
   - component: {fileID: 1137642993}
+  - component: {fileID: 1137642996}
   - component: {fileID: 1137642991}
   - component: {fileID: 1137642995}
   - component: {fileID: 1137642997}
-  - component: {fileID: 1137642996}
   - component: {fileID: 1137642998}
   m_Layer: 3
   m_Name: Samurai
@@ -1805,10 +1805,10 @@ MonoBehaviour:
   rb: {fileID: 1137642991}
   moveForce: 6
   mirandoIzqui: 0
-  jumpForce: 10
+  jumpForce: 11
   multiplierFall: 3
   jumpBufferTime: 0.2
-  maxFallSpeed: -20
+  maxFallSpeed: -10
   coyoteTime: 0.1
   coyoteTimeCounter: 0
   jumpSound: {fileID: 1516354987}
@@ -2064,6 +2064,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 1137642996}
+  hitAnimator: {fileID: 1957039668}
 --- !u!61 &1173719267
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2096,7 +2097,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.09726669, y: -0.2322489}
+  m_Offset: {x: 0.08876178, y: -0.20347929}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2107,7 +2108,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.2893577, y: 0.5355022}
+  m_Size: {x: 0.23832816, y: 0.33926964}
   m_EdgeRadius: 0
 --- !u!1 &1215881089
 GameObject:
@@ -2221,12 +2222,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 97d6d3ce8a4e7ba4489143557faa9f46, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4c0807c7980426c4399f2e8d5b9d8da2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -2269,7 +2270,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 2, y: 2}
-    newSize: {x: 1, y: 1}
+    newSize: {x: 2, y: 2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -5757,7 +5758,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: 1ff51d7cd8b60e444a0f8f3639b257ec, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e239214ddc19c4342bc4e4c5a967086b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -6088,6 +6089,18 @@ PrefabInstance:
     - target: {fileID: 2474783244645690210, guid: 02d72cff15a8286418f47978f0524c0a, type: 3}
       propertyPath: m_Name
       value: ninja1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200178121349960047, guid: 02d72cff15a8286418f47978f0524c0a, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200178121349960047, guid: 02d72cff15a8286418f47978f0524c0a, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4200178121349960047, guid: 02d72cff15a8286418f47978f0524c0a, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5437592751893909366, guid: 02d72cff15a8286418f47978f0524c0a, type: 3}
       propertyPath: m_LocalPosition.x
