@@ -30,7 +30,6 @@ public class Suriken : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        print(collision.name);
         if (collision.gameObject.CompareTag("NinjaM")&&reflejado)
         {
             collision.GetComponent<EnemyScript>().TakeDamage(rb.velocity.normalized);

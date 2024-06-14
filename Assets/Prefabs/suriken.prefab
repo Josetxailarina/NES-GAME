@@ -174,7 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fuerzaSuriken: 4
   lanzado: 0
-  distanciaReset: 20
+  distanciaReset: 12
 --- !u!95 &3679142296037119620
 Animator:
   serializedVersion: 5

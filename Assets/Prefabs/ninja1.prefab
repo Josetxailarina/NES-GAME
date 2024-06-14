@@ -195,7 +195,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   jumpForce: 4
-  throwInterval: 1
+  throwInterval: 0.7
   vidaTotal: 2
   jumpInterval: 2
   moveDistance: 5
+  damageEffectAnim: {fileID: 0}
+  dieEffect: {fileID: 0}
+  dieSound: {fileID: 0}
+  fuerzaEmpuje: 0
+  hitSound: {fileID: 0}
+  colorDamage: {r: 0, g: 0, b: 0, a: 0}

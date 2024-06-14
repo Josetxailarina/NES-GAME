@@ -11,6 +11,8 @@ public class EnemyScript : MonoBehaviour
     public float jumpInterval = 2.0f; // Tiempo entre saltos
     public float moveDistance = 5.0f; // Distancia que recorre antes de cambiar de dirección
     public Animator damageEffectAnim;
+    public Animator dieEffect;
+    public AudioSource dieSound;
     private Rigidbody2D rb;
     private float direction = 1.0f;
     private float jumpTimer;
@@ -19,11 +21,14 @@ public class EnemyScript : MonoBehaviour
     private bool isFacingRight;
     private LanzadorSurikens lanzadorSurikens;
     private Vector3 startPosition; // Posición inicial
-    private bool moviendo=true;
+    private bool moviendo = true;
     public float fuerzaEmpuje;
     public AudioSource hitSound;
+    private SpriteRenderer sprite;
+    public Color colorDamage;
     void Start()
     {
+        sprite = GetComponent<SpriteRenderer>();
         samurai = GameObject.FindGameObjectWithTag("Samurai");
         lanzadorSurikens = FindObjectOfType<LanzadorSurikens>();
         rb = GetComponent<Rigidbody2D>();
@@ -65,13 +70,13 @@ public class EnemyScript : MonoBehaviour
                 startPosition = transform.position; // Actualizar la posición inicial
             }
         }
-            // Hacer que el enemigo lance un suriken cada X segundos
-            if (Time.time - throwTimer >= throwInterval)
-            {
-                ThrowSuriken();
-                throwTimer = Time.time;
-            }
-        
+        // Hacer que el enemigo lance un suriken cada X segundos
+        if (Time.time - throwTimer >= throwInterval)
+        {
+            ThrowSuriken();
+            throwTimer = Time.time;
+        }
+
     }
 
     void ThrowSuriken()
@@ -82,23 +87,32 @@ public class EnemyScript : MonoBehaviour
 
     public void TakeDamage(Vector2 direccionHit)
     {
-        print("Damage");
-        vidaTotal -= 1;
-        damageEffectAnim.transform.position = transform.position;
-        damageEffectAnim.SetTrigger("Hit");
-        hitSound.Play();
-
-        StopAllCoroutines();
-        StartCoroutine(Damage(direccionHit));
-        if (vidaTotal <= 0)
+        
+        if (vidaTotal < 0)
         {
             EnemyDie();
         }
+        else
+        {
+            vidaTotal -= 1;
+            damageEffectAnim.transform.position = transform.position;
+            damageEffectAnim.transform.rotation = transform.rotation;
+            damageEffectAnim.SetTrigger("Hit");
+            hitSound.Play();
+
+            StopAllCoroutines();
+            StartCoroutine(Damage(direccionHit));
+        }
+
     }
     IEnumerator Damage(Vector2 direccionHit)
     {
+        sprite.material.SetColor("_Tint", colorDamage);
         moviendo = false;
         rb.velocity = direccionHit * fuerzaEmpuje;
+        yield return new WaitForSeconds(0.1f);
+        sprite.material.SetColor("_Tint", new Color(colorDamage.r, colorDamage.g, colorDamage.b, 0));
+
         yield return new WaitForSeconds(0.6f);
         moviendo = true;
 
@@ -106,7 +120,11 @@ public class EnemyScript : MonoBehaviour
 
     void EnemyDie()
     {
-        // Implementa aquí la lógica para cuando el enemigo muere
+        dieEffect.transform.position = transform.position;
+        dieEffect.transform.rotation = transform.rotation;
+        dieEffect.SetTrigger("Hit");
+        dieSound.Play();
+        gameObject.SetActive(false);
     }
 
 }

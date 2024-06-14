@@ -14,19 +14,51 @@ public class SlashScript : MonoBehaviour
         {
             playerController.PerformJumpAttack();
 
+
         }
         if (collision.CompareTag("Suriken"))
         {
-            animHit.transform.position = collision.transform.position;
-            animHit.transform.rotation = transform.rotation;
-            animHit.SetTrigger("Hit");
-            collision.GetComponent<Suriken>().Reflejar(playerController.direccionAtaque);
             hitSound.Play();
+
+            if (playerController.direccionAtaque == Vector2.down)
+            {
+                collision.GetComponent<Suriken>().Reflejar(playerController.direccionAtaque);
+
+            }
+            else if (playerController.direccionAtaque == Vector2.up)
+            {
+                collision.GetComponent<Suriken>().Reflejar(playerController.direccionAtaque);
+
+            }
+            else 
+            {
+                if (playerController.mirandoIzqui)
+                {
+                    collision.GetComponent<Suriken>().Reflejar(Vector2.left);
+
+                }
+                else
+                {
+                    collision.GetComponent<Suriken>().Reflejar(Vector2.right);
+
+                }
+
+            }
+
 
         }
         else if (collision.CompareTag("NinjaM"))
         {
-            collision.GetComponent<EnemyScript>().TakeDamage(playerController.direccionAtaque);
+            if (playerController.transform.position.x > collision.transform.position.x)
+            {
+                collision.GetComponent<EnemyScript>().TakeDamage(Vector2.left);
+
+            }
+            else
+            {
+                collision.GetComponent<EnemyScript>().TakeDamage(Vector2.right);
+
+            }
         }
     }
 }
