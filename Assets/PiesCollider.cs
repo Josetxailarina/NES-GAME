@@ -14,6 +14,7 @@ public class PiesCollider : MonoBehaviour
             print("Limite alcanzado, ultima posicion segura: " + ultimaPosicionSegura);
             controllerScript.rb.velocity = Vector3.zero;
             controllerScript.transform.position = ultimaPosicionSegura;
+            StartCoroutine(controllerScript.TakeDamage(Vector2.zero));
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)

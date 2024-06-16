@@ -2,6 +2,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -55,6 +56,7 @@ public class PlayerController : MonoBehaviour
     #region OTRAS
     [Header("OTRAS")]
 
+    private Vector3 posicionLastCheckpoint;
     private Vector2 gravityVector;
     public AnimatorOverrideController[] animatorOverrideController;
     public AudioSource spawnSound;
@@ -62,6 +64,10 @@ public class PlayerController : MonoBehaviour
     public bool parpadeando;
     public SpriteRenderer sprite;
     public AudioSource damageSound;
+    public AudioSource musicSound;
+    public AudioSource deadMusicSound;
+    public GameObject gameOverPanel;
+    public GameOverMenu gameOverScript;
     #endregion
 
 
@@ -72,6 +78,7 @@ public class PlayerController : MonoBehaviour
         gravityVector = new Vector2(0, -Physics2D.gravity.y);
         playerInput = GetComponent<PlayerInput>();
        anim = GetComponent<Animator>();
+        posicionLastCheckpoint = transform.position;
     }
 
     private void Update()
@@ -96,7 +103,7 @@ public class PlayerController : MonoBehaviour
         }
 
             // Actualiza el animator solo si el estado de movimiento ha cambiado
-            if (moveInput != previousMoveInput&&!damaged)
+            if (moveInput != previousMoveInput&&!damaged&&GameManagerScript.modoJuego == GameMode.Play)
             {
                 anim.SetBool("Running", moveInput != 0);
                 previousMoveInput = moveInput; // Actualiza el estado previo
@@ -161,19 +168,38 @@ public class PlayerController : MonoBehaviour
         
     }
     
+    public void ResetSamurai()
+    {
+        transform.position = posicionLastCheckpoint;
+        anim.SetTrigger("Reset");
+        vidas = 3;
+        vidaSpriteRenderer.sprite = vidasImgs[vidas];
+        musicSound.Play();
+        deadMusicSound.Stop();
+
+
+    }
     public void Jump(InputAction.CallbackContext callBack)
     {
         if (callBack.performed&&!damaged)
         {
-            jumpButtonHeld = true; // Indicar que el botón de salto está presionado
-            //if (doubleJumpReady)
-            //{
-            //    PerformJump();
-            //}
-            //else
-            //{
-             jumpBufferCounter = jumpBufferTime;
-            //}
+            if (GameManagerScript.modoJuego == GameMode.Play)
+            {
+                jumpButtonHeld = true; // Indicar que el botón de salto está presionado
+                                       //if (doubleJumpReady)
+                                       //{
+                                       //    PerformJump();
+                                       //}
+                                       //else
+                                       //{
+                jumpBufferCounter = jumpBufferTime;
+                //}
+            }
+            else if (GameManagerScript.modoJuego == GameMode.Menu)
+            {
+                gameOverScript.Aceptar();
+            }
+
         }
 
         if (callBack.canceled)
@@ -188,7 +214,7 @@ public class PlayerController : MonoBehaviour
 
     public void PerformJump()
     {
-        if (!damaged)
+        if (!damaged && GameManagerScript.modoJuego == GameMode.Play)
         {
             float actualJumpForce = jumpButtonHeld ? jumpForce : jumpForce * 0.7f;
             rb.velocity = new Vector2(rb.velocity.x, actualJumpForce);
@@ -203,7 +229,7 @@ public class PlayerController : MonoBehaviour
     public void PerformJumpAttack()
     {
 
-        if (!damaged)
+        if (!damaged && GameManagerScript.modoJuego == GameMode.Play)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             tocandoSuelo = false;
@@ -227,12 +253,12 @@ public class PlayerController : MonoBehaviour
 
     public void StartButton(InputAction.CallbackContext callBack)
     {
-        if (callBack.started)
+        if (callBack.started && GameManagerScript.modoJuego == GameMode.Play)
         {
             
 
         }
-        else if (callBack.started  )
+        else if (callBack.started && GameManagerScript.modoJuego == GameMode.Play  )
         {
 
 
@@ -247,7 +273,7 @@ public class PlayerController : MonoBehaviour
 
     public void Attack(InputAction.CallbackContext callBack)
     {
-        if (callBack.performed && !damaged)
+        if (callBack.performed && !damaged && GameManagerScript.modoJuego == GameMode.Play)
         {
             if (currentAttackCD <= 0)
             {
@@ -295,6 +321,10 @@ public class PlayerController : MonoBehaviour
         if (callBack.started)
         {
             upPressed = true;
+            if (GameManagerScript.modoJuego == GameMode.Menu)
+            {
+                gameOverScript.Subir();
+            }
         }
         if (callBack.canceled)
         {
@@ -306,7 +336,10 @@ public class PlayerController : MonoBehaviour
         if (callBack.started)
         {
             downPressed = true;
-
+            if (GameManagerScript.modoJuego == GameMode.Menu)
+            {
+                gameOverScript.Bajar();
+            }
         }
         if (callBack.canceled)
         {
@@ -324,7 +357,18 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            print("Muerto");
+            damageSound.Play();
+
+            anim.SetTrigger("Dead");
+            Time.timeScale = 0;
+            musicSound.Stop();
+            deadMusicSound.Play();
+            GameManagerScript.modoJuego = GameMode.GameOver;
+            yield return new WaitForSecondsRealtime(2);
+            gameOverPanel.SetActive(true);
+            GameManagerScript.modoJuego = GameMode.Menu;
+
+            yield break;
         }
         
         damageSound.Play(); 
