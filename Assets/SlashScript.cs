@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,39 +23,35 @@ public class SlashScript : MonoBehaviour
             animHit.SetTrigger("Hit");
 
         }
-        if (collision.CompareTag("Suriken"))
+        if (collision.CompareTag("Suriken") || collision.CompareTag("BolaFuego"))
         {
             animHit.transform.position = collision.transform.position;
             animHit.transform.rotation = transform.rotation;
             animHit.SetTrigger("Hit");
 
-            if (playerController.direccionAtaque == Vector2.down)
-            {
-                collision.GetComponent<Suriken>().Reflejar(playerController.direccionAtaque);
+            Vector2 direccionReflejo;
 
+            if (playerController.direccionAtaque == Vector2.down || playerController.direccionAtaque == Vector2.up)
+            {
+                direccionReflejo = playerController.direccionAtaque;
             }
-            else if (playerController.direccionAtaque == Vector2.up)
+            else
             {
-                collision.GetComponent<Suriken>().Reflejar(playerController.direccionAtaque);
-
-            }
-            else 
-            {
-                if (playerController.mirandoIzqui)
-                {
-                    collision.GetComponent<Suriken>().Reflejar(Vector2.left);
-
-                }
-                else
-                {
-                    collision.GetComponent<Suriken>().Reflejar(Vector2.right);
-
-                }
-
+                direccionReflejo = playerController.mirandoIzqui ? Vector2.left : Vector2.right;
             }
 
-
+            if (collision.CompareTag("Suriken"))
+            {
+                collision.GetComponent<Suriken>().Reflejar(direccionReflejo);
+            }
+            else if (collision.CompareTag("BolaFuego"))
+            {
+                collision.GetComponent<BolaFuego>().Reflejar(direccionReflejo);
+            }
         }
+
+
+    
         else if (collision.CompareTag("NinjaM"))
         {
             if (playerController.transform.position.x > collision.transform.position.x)
@@ -109,4 +106,5 @@ public class SlashScript : MonoBehaviour
         }
 
     }
+    
 }

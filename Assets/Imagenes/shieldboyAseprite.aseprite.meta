@@ -129,7 +129,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 38
-      y: 43
+      y: 84
       width: 22
       height: 32
     spriteID: 6f207298e97dc234e915933de5fa1bf4
@@ -140,7 +140,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 38, y: 43}
+    uvTransform: {x: 38, y: 84}
   - name: shieldboyAseprite_Frame_1
     originalName: 
     pivot: {x: 0.5, y: 0}
@@ -149,7 +149,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 38
-      y: 83
+      y: 124
       width: 22
       height: 32
     spriteID: e0aa3b30e485bdb4eb9af4f7a47b35a4
@@ -160,7 +160,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 38, y: 83}
+    uvTransform: {x: 38, y: 124}
   - name: shieldboyAseprite_Frame_2
     originalName: 
     pivot: {x: 0.5, y: 0}
@@ -168,8 +168,8 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 99
-      y: 44
+      x: 38
+      y: 204
       width: 22
       height: 31
     spriteID: 143d6c4cbe5ebd645a0c902c151d40cd
@@ -180,7 +180,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 99, y: 44}
+    uvTransform: {x: 38, y: 204}
   - name: shieldboyAseprite_Frame_3
     originalName: 
     pivot: {x: 0.5, y: 0}
@@ -188,8 +188,8 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 69
-      y: 4
+      x: 38
+      y: 164
       width: 22
       height: 32
     spriteID: 4ad5f181c6f93014a9aa98ea926e65da
@@ -200,68 +200,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 69, y: 4}
+    uvTransform: {x: 38, y: 164}
   - name: shieldboyAseprite_Frame_4
-    originalName: 
-    pivot: {x: 0.56, y: 0}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 44
-      width: 25
-      height: 32
-    spriteID: cbee09246d9a9c24eb9d7481a780f8d1
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 4, y: 44}
-  - name: shieldboyAseprite_Frame_5
-    originalName: 
-    pivot: {x: 0.5, y: 0}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 69
-      y: 44
-      width: 22
-      height: 32
-    spriteID: 6f750b91efa598c458fa3a1225804718
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 69, y: 44}
-  - name: shieldboyAseprite_Frame_6
-    originalName: 
-    pivot: {x: 0.5217391, y: 0}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 38
-      y: 4
-      width: 23
-      height: 31
-    spriteID: 2455dd254f7f19d4196060a5cf5caff9
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 38, y: 4}
-  - name: shieldboyAseprite_Frame_7
     originalName: 
     pivot: {x: 0.5769231, y: 0}
     alignment: 9
@@ -272,7 +212,7 @@ ScriptedImporter:
       y: 4
       width: 26
       height: 32
-    spriteID: cf96bd73dd6ac7546b3e5304179ce0f5
+    spriteID: cbee09246d9a9c24eb9d7481a780f8d1
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -281,7 +221,27 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  - name: shieldboyAseprite_Frame_8
+  - name: shieldboyAseprite_Frame_5
+    originalName: 
+    pivot: {x: 0.5217391, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 38
+      y: 4
+      width: 23
+      height: 32
+    spriteID: 6f750b91efa598c458fa3a1225804718
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 38, y: 4}
+  - name: shieldboyAseprite_Frame_6
     originalName: 
     pivot: {x: 0.5, y: 0}
     alignment: 9
@@ -289,8 +249,48 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 69
-      y: 84
+      y: 153
       width: 22
+      height: 31
+    spriteID: 2455dd254f7f19d4196060a5cf5caff9
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 69, y: 153}
+  - name: shieldboyAseprite_Frame_7
+    originalName: 
+    pivot: {x: 0.5769231, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 44
+      width: 26
+      height: 32
+    spriteID: cf96bd73dd6ac7546b3e5304179ce0f5
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 44}
+  - name: shieldboyAseprite_Frame_8
+    originalName: 
+    pivot: {x: 0.5769231, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 84
+      width: 26
       height: 32
     spriteID: 17bf092ef42609446b88c0eb2d4c5ef9
     spriteBone: []
@@ -300,17 +300,17 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 69, y: 84}
+    uvTransform: {x: 4, y: 84}
   - name: shieldboyAseprite_Frame_9
     originalName: 
-    pivot: {x: 0.5416667, y: 0}
+    pivot: {x: 0.5217391, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 84
-      width: 24
+      x: 38
+      y: 44
+      width: 23
       height: 32
     spriteID: 23adb2bb4d85ae541bbfa0cf1683482f
     spriteBone: []
@@ -320,17 +320,17 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 84}
+    uvTransform: {x: 38, y: 44}
   - name: shieldboyAseprite_Frame_10
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5769231, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 99
-      y: 83
-      width: 22
+      x: 4
+      y: 164
+      width: 26
       height: 31
     spriteID: b1989ad6f221b2b4ea170ab3cbf54943
     spriteBone: []
@@ -340,17 +340,17 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 99, y: 83}
+    uvTransform: {x: 4, y: 164}
   - name: shieldboyAseprite_Frame_11
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5769231, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 99
-      y: 4
-      width: 22
+      x: 4
+      y: 124
+      width: 26
       height: 32
     spriteID: 84995d1f2eb0f6441bb3297c0cf5565f
     spriteBone: []
@@ -360,7 +360,107 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 99, y: 4}
+    uvTransform: {x: 4, y: 124}
+  - name: shieldboyAseprite_Frame_12
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 69
+      y: 42
+      width: 24
+      height: 29
+    spriteID: bfa5cfc6888786842ad9c7962937d9b1
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 69, y: 42}
+  - name: shieldboyAseprite_Frame_13
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 69
+      y: 79
+      width: 24
+      height: 29
+    spriteID: 5ab1f97482bf8144486d7f2b7ae0a529
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 69, y: 79}
+  - name: shieldboyAseprite_Frame_14
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 69
+      y: 4
+      width: 24
+      height: 30
+    spriteID: 289dbf9b5a2cf1f49a473664c242d7ee
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 69, y: 4}
+  - name: shieldboyAseprite_Frame_15
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 69
+      y: 116
+      width: 24
+      height: 29
+    spriteID: e967cac6658fb2842999476d25f55d20
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 69, y: 116}
+  - name: shieldboyAseprite_Frame_16
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 203
+      width: 24
+      height: 31
+    spriteID: bd1c848a70ce6b646865868120fafbf4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 203}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -405,25 +505,25 @@ ScriptedImporter:
     - name: shieldboyAseprite_Frame_4
       frameIndex: 4
       cellRect:
-        x: 2
+        x: 1
         y: 0
-        width: 25
+        width: 26
         height: 32
       spriteId: cbee09246d9a9c24eb9d7481a780f8d1
     - name: shieldboyAseprite_Frame_5
       frameIndex: 5
       cellRect:
-        x: 5
+        x: 4
         y: 0
-        width: 22
+        width: 23
         height: 32
       spriteId: 6f750b91efa598c458fa3a1225804718
     - name: shieldboyAseprite_Frame_6
       frameIndex: 6
       cellRect:
-        x: 4
+        x: 5
         y: 0
-        width: 23
+        width: 22
         height: 31
       spriteId: 2455dd254f7f19d4196060a5cf5caff9
     - name: shieldboyAseprite_Frame_7
@@ -437,35 +537,75 @@ ScriptedImporter:
     - name: shieldboyAseprite_Frame_8
       frameIndex: 8
       cellRect:
-        x: 5
+        x: 1
         y: 0
-        width: 22
+        width: 26
         height: 32
       spriteId: 17bf092ef42609446b88c0eb2d4c5ef9
     - name: shieldboyAseprite_Frame_9
       frameIndex: 9
       cellRect:
-        x: 3
+        x: 4
         y: 0
-        width: 24
+        width: 23
         height: 32
       spriteId: 23adb2bb4d85ae541bbfa0cf1683482f
     - name: shieldboyAseprite_Frame_10
       frameIndex: 10
       cellRect:
-        x: 5
+        x: 1
         y: 0
-        width: 22
+        width: 26
         height: 31
       spriteId: b1989ad6f221b2b4ea170ab3cbf54943
     - name: shieldboyAseprite_Frame_11
       frameIndex: 11
       cellRect:
-        x: 5
+        x: 1
         y: 0
-        width: 22
+        width: 26
         height: 32
       spriteId: 84995d1f2eb0f6441bb3297c0cf5565f
+    - name: shieldboyAseprite_Frame_12
+      frameIndex: 12
+      cellRect:
+        x: 4
+        y: 0
+        width: 24
+        height: 29
+      spriteId: bfa5cfc6888786842ad9c7962937d9b1
+    - name: shieldboyAseprite_Frame_13
+      frameIndex: 13
+      cellRect:
+        x: 4
+        y: 0
+        width: 24
+        height: 29
+      spriteId: 5ab1f97482bf8144486d7f2b7ae0a529
+    - name: shieldboyAseprite_Frame_14
+      frameIndex: 14
+      cellRect:
+        x: 4
+        y: 0
+        width: 24
+        height: 30
+      spriteId: 289dbf9b5a2cf1f49a473664c242d7ee
+    - name: shieldboyAseprite_Frame_15
+      frameIndex: 15
+      cellRect:
+        x: 4
+        y: 0
+        width: 24
+        height: 29
+      spriteId: e967cac6658fb2842999476d25f55d20
+    - name: shieldboyAseprite_Frame_16
+      frameIndex: 16
+      cellRect:
+        x: 4
+        y: 0
+        width: 24
+        height: 31
+      spriteId: bd1c848a70ce6b646865868120fafbf4
     linkedCells: []
     parentIndex: -1
   platformSettings: []

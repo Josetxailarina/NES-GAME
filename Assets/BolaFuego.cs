@@ -1,19 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Suriken : MonoBehaviour
+public class BolaFuego : MonoBehaviour
 {
     private Rigidbody2D rb;
-    public float fuerzaSuriken;
     private GameObject samurai;
     public bool lanzado;
     public float distanciaReset;
     private Vector3 posicionInicial;
     private bool reflejado;
-    private Vector3 direccionReflejo;
-   
+    public float fireVelocity;
     private void Start()
     {
         posicionInicial = transform.position;
@@ -24,62 +21,65 @@ public class Suriken : MonoBehaviour
     {
         if (Vector3.Distance(samurai.transform.position, transform.position) > distanciaReset)
         {
-            ResetSuriken();
+            ResetFireBall();
 
         }
 
     }
-    
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("NinjaM")&&reflejado)
+        if ((collision.gameObject.CompareTag("NinjaM")) && reflejado)
         {
             collision.GetComponent<EnemyScript>().TakeDamage(rb.velocity.normalized);
-            ResetSuriken();
+            ResetFireBall();
+
         }
+        else if (collision.gameObject.CompareTag("ShieldBoy") && reflejado)
+        {
+            collision.GetComponent<ShieldBoy>().GoRomperGuardia();
+            ResetFireBall();
+
+        }
+
     }
 
-    public void ResetSuriken()
+    public void ResetFireBall()
     {
         transform.position = posicionInicial;
-        rb.simulated = false;
         rb.velocity = Vector2.zero;
         lanzado = false;
-        rb.gravityScale = 1;
         reflejado = false;
-        int layerSamurai = LayerMask.NameToLayer("DamageCollider");
-        rb.excludeLayers &= ~(1 << layerSamurai);
+        int layerDamage = LayerMask.NameToLayer("DamageCollider");
+        rb.excludeLayers &= ~(1 << layerDamage);
 
     }
     public void Reflejar(Vector2 direccionReflejo)
     {
         reflejado = true;
-        rb.gravityScale = 0;
         rb.velocity = direccionReflejo * 10;
-        int layerSamurai = LayerMask.NameToLayer("DamageCollider");
-        rb.excludeLayers |= (1 << layerSamurai);
+        int layerDamage = LayerMask.NameToLayer("DamageCollider");
+        rb.excludeLayers |= (1 << layerDamage);
     }
 
-    public void LanzarSuriken(Vector3 posicionSuriken, bool derecha)
+    public void LanzarFuego(Vector3 posicionSuriken, bool derecha)
     {
-        int layerSamurai = LayerMask.NameToLayer("Slash");
-        rb.excludeLayers |= (1 << layerSamurai);
+        int layerSlash = LayerMask.NameToLayer("Slash");
+        rb.excludeLayers |= (1 << layerSlash);
         lanzado = true;
         transform.position = posicionSuriken;
-        rb.simulated = true;
-        rb.velocity = Vector2.zero;
+
         if (derecha)
         {
-            rb.AddForce(new Vector2(fuerzaSuriken * Random.Range(0.8f, 1), fuerzaSuriken * 2 * Random.Range(0.2f, 0.5f)), ForceMode2D.Impulse);
+            rb.velocity = new Vector2(1,0) * fireVelocity;
         }
         else
         {
-            rb.AddForce(new Vector2((fuerzaSuriken * -1) * Random.Range(0.5f, 1), fuerzaSuriken * 2 * Random.Range(0.5f, 1)), ForceMode2D.Impulse);
+            rb.velocity = new Vector2(-1, 0) * fireVelocity;
 
         }
-        StartCoroutine(TiempoInreflejable());
+        StartCoroutine(TiempoInrreflejable());
     }
-    IEnumerator TiempoInreflejable()
+    IEnumerator TiempoInrreflejable()
     {
         yield return new WaitForSecondsRealtime(0.15f);
         int layerSamurai = LayerMask.NameToLayer("Slash");

@@ -55,7 +55,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 27fc8e672ec9d504eb2a919c99f341ea, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -165,9 +165,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65d456a5c80b615488e3007d0c4d2823, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actualHealth: 3
+  actualHealth: 10
   damageEffectAnim: {fileID: 0}
   dieEffect: {fileID: 0}
   dieSound: {fileID: 0}
   hitSound: {fileID: 0}
-  colorDamage: {r: 0, g: 0, b: 0, a: 0}
+  colorDamage: {r: 1, g: 1, b: 1, a: 1}
+  reboteSound: {fileID: 0}
+  intervaloDisparos: 3
+  chargingSound: {fileID: 0}
+  fireSound: {fileID: 0}

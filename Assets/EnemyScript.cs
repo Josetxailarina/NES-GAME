@@ -70,7 +70,6 @@ public class EnemyScript : MonoBehaviour
             damageEffectAnim.SetTrigger("Hit");
             hitSound.Play();
 
-            StopAllCoroutines();
             StartCoroutine(Damage(direccionHit));
         }
 
