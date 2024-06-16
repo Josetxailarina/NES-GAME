@@ -71,9 +71,9 @@ public class EnemyScript : MonoBehaviour
 
             rb.velocity = new Vector3(speed * direction, rb.velocity.y);
 
-
-            // Hacer que el enemigo salte cada X segundos
-            if (Time.time - jumpTimer >= jumpInterval)
+        }
+        // Hacer que el enemigo salte cada X segundos
+        if (Time.time - jumpTimer >= jumpInterval)
             {
                 rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode2D.Impulse);
                 jumpTimer = Time.time;
@@ -85,7 +85,7 @@ public class EnemyScript : MonoBehaviour
                 direction *= -1; // Cambiar la dirección
                 startPosition = transform.position; // Actualizar la posición inicial
             }
-        }
+        
         // Hacer que el enemigo lance un suriken cada X segundos
         if (Time.time - throwTimer >= throwInterval)
         {
@@ -127,6 +127,7 @@ public class EnemyScript : MonoBehaviour
         transform.position = initialPosition;
         actualHealth = initialHealth;
         moviendo = true;
+        sprite.material.SetColor("_Tint", new Color(colorDamage.r, colorDamage.g, colorDamage.b, 0));
 
     }
     IEnumerator Damage(Vector2 direccionHit)
