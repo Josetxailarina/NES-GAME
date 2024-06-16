@@ -9,7 +9,7 @@ public class SlashScript : MonoBehaviour
     public PlayerController playerController;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("NinjaM"))
+        if (!collision.CompareTag("NinjaM")&& !collision.CompareTag("ShieldBoy"))
         {
             hitSound.Play();
         }
@@ -86,7 +86,7 @@ public class SlashScript : MonoBehaviour
         {
             if (playerController.transform.position.x > collision.transform.position.x)
             {
-                //collision.GetComponent<EnemyScript>().TakeDamage(Vector2.left);
+                collision.GetComponent<EnemyScript>().TakeDamage(Vector2.left);
                 if (playerController.direccionAtaque != Vector2.down)
                 {
                     playerController.StartKnockUp(Vector2.right);
@@ -96,7 +96,7 @@ public class SlashScript : MonoBehaviour
             }
             else
             {
-                //collision.GetComponent<EnemyScript>().TakeDamage(Vector2.right);
+                collision.GetComponent<EnemyScript>().TakeDamage(Vector2.right);
                 if (playerController.direccionAtaque != Vector2.down)
                 {
                     playerController.StartKnockUp(Vector2.left);

@@ -412,23 +412,6 @@ public class PlayerController : MonoBehaviour
         sprite.enabled = false;
         yield return new WaitForSecondsRealtime(0.1f);
         sprite.enabled = true;
-        yield return new WaitForSecondsRealtime(0.1f);
-        sprite.enabled = false;
-        yield return new WaitForSecondsRealtime(0.1f);
-        sprite.enabled = true;
-        yield return new WaitForSecondsRealtime(0.1f);
-        sprite.enabled = false;
-        yield return new WaitForSecondsRealtime(0.1f);
-        sprite.enabled = true;
-        yield return new WaitForSecondsRealtime(0.1f);
-        sprite.enabled = false;
-        yield return new WaitForSecondsRealtime(0.1f);
-        sprite.enabled = true;
-        yield return new WaitForSecondsRealtime(0.1f);
-        sprite.enabled = false;
-        yield return new WaitForSecondsRealtime(0.1f);
-        sprite.enabled = true;
-        yield return new WaitForSecondsRealtime(0.1f);
         parpadeando = false;
 
     }
