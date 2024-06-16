@@ -12,10 +12,13 @@ public class GameOverMenu : MonoBehaviour
     public bool arriba=true;
     public AudioSource moverMenuSound;
     public AudioSource aceptarSound;
+    public EnemyScript[] enemys;
 
     private void Start()
     {
         posicionInicialSuriken = suriken.transform.localPosition;
+        enemys = FindObjectsOfType<EnemyScript>();
+        gameObject.SetActive(false);
     }
     public void Subir()
     {
@@ -44,6 +47,12 @@ public class GameOverMenu : MonoBehaviour
             Time.timeScale = 1.0f;
             playerController.ResetSamurai(); 
             aceptarSound.Play();
+            foreach (EnemyScript script in enemys)
+            {
+                print("reiniciando a "+ script.gameObject.name);
+                script.gameObject.SetActive(true);
+                script.ResetEnemy();
+            }
             GameManagerScript.modoJuego = GameMode.Play;
 
         }

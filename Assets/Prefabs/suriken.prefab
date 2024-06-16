@@ -155,7 +155,7 @@ Rigidbody2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -172,9 +172,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08201c1e5b165bf4b8c9c15376a59f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fuerzaSuriken: 4
+  fuerzaSuriken: 3
   lanzado: 0
-  distanciaReset: 12
+  distanciaReset: 8
 --- !u!95 &3679142296037119620
 Animator:
   serializedVersion: 5

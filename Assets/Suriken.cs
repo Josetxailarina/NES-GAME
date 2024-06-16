@@ -44,33 +44,43 @@ public class Suriken : MonoBehaviour
         lanzado = false;
         rb.gravityScale = 1;
         reflejado = false;
-        int layerSamurai = LayerMask.NameToLayer("Samurai");
+        int layerSamurai = LayerMask.NameToLayer("DamageCollider");
         rb.excludeLayers &= ~(1 << layerSamurai);
+
     }
     public void Reflejar(Vector2 direccionReflejo)
     {
         reflejado = true;
         rb.gravityScale = 0;
         rb.velocity = direccionReflejo * 10;
-        int layerSamurai = LayerMask.NameToLayer("Samurai");
+        int layerSamurai = LayerMask.NameToLayer("DamageCollider");
         rb.excludeLayers |= (1 << layerSamurai);
     }
 
     public void LanzarSuriken(Vector3 posicionSuriken, bool derecha)
     {
+        int layerSamurai = LayerMask.NameToLayer("Slash");
+        rb.excludeLayers |= (1 << layerSamurai);
         lanzado = true;
         transform.position = posicionSuriken;
         rb.simulated = true;
         rb.velocity = Vector2.zero;
         if (derecha)
         {
-            rb.AddForce(new Vector2(fuerzaSuriken * Random.Range(0.5f, 1), fuerzaSuriken * 2 * Random.Range(0.5f, 1)), ForceMode2D.Impulse);
+            rb.AddForce(new Vector2(fuerzaSuriken * Random.Range(0.8f, 1), fuerzaSuriken * 2 * Random.Range(0.2f, 0.5f)), ForceMode2D.Impulse);
         }
         else
         {
             rb.AddForce(new Vector2((fuerzaSuriken * -1) * Random.Range(0.5f, 1), fuerzaSuriken * 2 * Random.Range(0.5f, 1)), ForceMode2D.Impulse);
 
         }
+        StartCoroutine(TiempoInreflejable());
+    }
+    IEnumerator TiempoInreflejable()
+    {
+        yield return new WaitForSecondsRealtime(0.15f);
+        int layerSamurai = LayerMask.NameToLayer("Slash");
+        rb.excludeLayers &= ~(1 << layerSamurai);
     }
 
 }

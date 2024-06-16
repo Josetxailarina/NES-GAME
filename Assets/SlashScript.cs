@@ -18,6 +18,9 @@ public class SlashScript : MonoBehaviour
         }
         if (collision.CompareTag("Suriken"))
         {
+            animHit.transform.position = collision.transform.position;
+            animHit.transform.rotation = transform.rotation;
+            animHit.SetTrigger("Hit");
             hitSound.Play();
 
             if (playerController.direccionAtaque == Vector2.down)
@@ -52,11 +55,24 @@ public class SlashScript : MonoBehaviour
             if (playerController.transform.position.x > collision.transform.position.x)
             {
                 collision.GetComponent<EnemyScript>().TakeDamage(Vector2.left);
+                if (playerController.direccionAtaque != Vector2.down)
+                {
+                    playerController.StartKnockUp(Vector2.right);
+
+                }
+                print("llamo a corrutina knokup rigt");
 
             }
             else
             {
                 collision.GetComponent<EnemyScript>().TakeDamage(Vector2.right);
+                if (playerController.direccionAtaque != Vector2.down)
+                {
+                    playerController.StartKnockUp(Vector2.left);
+
+                }
+                print("llamo a corrutina knokup left");
+
 
             }
         }

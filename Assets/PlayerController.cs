@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
     #region OTRAS
     [Header("OTRAS")]
 
-    private Vector3 posicionLastCheckpoint;
+    public Vector3 posicionLastCheckpoint;
     private Vector2 gravityVector;
     public AnimatorOverrideController[] animatorOverrideController;
     public AudioSource spawnSound;
@@ -275,6 +275,7 @@ public class PlayerController : MonoBehaviour
     {
         if (callBack.performed && !damaged && GameManagerScript.modoJuego == GameMode.Play)
         {
+            
             if (currentAttackCD <= 0)
             {
                 if (upPressed)
@@ -314,6 +315,7 @@ public class PlayerController : MonoBehaviour
 
         if (callBack.canceled   )
         {
+         
         }
     }
     public void Up(InputAction.CallbackContext callBack)
@@ -347,7 +349,23 @@ public class PlayerController : MonoBehaviour
 
         }
     }
-   
+    public void StartKnockUp(Vector2 direction)
+    {
+        StartCoroutine(KnockUp(direction));
+    }
+    public IEnumerator KnockUp(Vector2 direction)
+    {
+        damaged = true;
+        rb.velocity = direction * 10;
+        print("knok up antes de la pausa");
+        yield return new WaitForSecondsRealtime(0.08f);
+        print("acaba knockup");
+        damaged = false;
+      
+            
+        
+    }
+
     public IEnumerator TakeDamage(Vector2 direccion)
     {
         if (vidas>0)
@@ -364,7 +382,7 @@ public class PlayerController : MonoBehaviour
             musicSound.Stop();
             deadMusicSound.Play();
             GameManagerScript.modoJuego = GameMode.GameOver;
-            yield return new WaitForSecondsRealtime(2);
+            yield return new WaitForSecondsRealtime(1.7f);
             gameOverPanel.SetActive(true);
             GameManagerScript.modoJuego = GameMode.Menu;
 

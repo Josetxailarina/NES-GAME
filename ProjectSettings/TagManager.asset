@@ -16,8 +16,8 @@ TagManager:
   - UI
   - Suelo
   - Enemy
-  - 
-  - 
+  - DamageCollider
+  - Slash
   - 
   - 
   - 

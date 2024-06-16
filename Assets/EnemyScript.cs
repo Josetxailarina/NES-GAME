@@ -7,7 +7,7 @@ public class EnemyScript : MonoBehaviour
     public float speed = 2.0f;
     public float jumpForce = 2.0f;
     public float throwInterval = 2.0f;
-    public int vidaTotal = 3;
+    public int actualHealth = 3;
     public float jumpInterval = 2.0f; // Tiempo entre saltos
     public float moveDistance = 5.0f; // Distancia que recorre antes de cambiar de dirección
     public Animator damageEffectAnim;
@@ -26,19 +26,35 @@ public class EnemyScript : MonoBehaviour
     public AudioSource hitSound;
     private SpriteRenderer sprite;
     public Color colorDamage;
-    void Start()
+    private Vector3 initialPosition;
+    private int initialHealth;
+    private void Awake()
     {
+        initialPosition = transform.position;
+        initialHealth = actualHealth;
         sprite = GetComponent<SpriteRenderer>();
         samurai = GameObject.FindGameObjectWithTag("Samurai");
         lanzadorSurikens = FindObjectOfType<LanzadorSurikens>();
         rb = GetComponent<Rigidbody2D>();
+        startPosition = transform.position; // Guardar la posición inicial
+
+
+
+
+    }
+    void OnEnable()
+    {
+        
         jumpTimer = Time.time;
         throwTimer = Time.time;
-        startPosition = transform.position; // Guardar la posición inicial
     }
 
     void Update()
     {
+        if (transform.position.y < -10)
+        {
+            gameObject.SetActive(false);
+        }
         if (moviendo)
         {
             //mirar al player
@@ -88,13 +104,13 @@ public class EnemyScript : MonoBehaviour
     public void TakeDamage(Vector2 direccionHit)
     {
         
-        if (vidaTotal < 0)
+        if (actualHealth < 0)
         {
             EnemyDie();
         }
         else
         {
-            vidaTotal -= 1;
+            actualHealth -= 1;
             damageEffectAnim.transform.position = transform.position;
             damageEffectAnim.transform.rotation = transform.rotation;
             damageEffectAnim.SetTrigger("Hit");
@@ -103,6 +119,14 @@ public class EnemyScript : MonoBehaviour
             StopAllCoroutines();
             StartCoroutine(Damage(direccionHit));
         }
+
+    }
+    public void ResetEnemy()
+    {
+        rb.velocity = Vector3.zero; 
+        transform.position = initialPosition;
+        actualHealth = initialHealth;
+        moviendo = true;
 
     }
     IEnumerator Damage(Vector2 direccionHit)
