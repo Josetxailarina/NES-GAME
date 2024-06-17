@@ -250,4 +250,4 @@ MonoBehaviour:
   throwInterval: 0.8
   jumpInterval: 1
   moveDistance: 5
-  fuerzaEmpuje: 4
+  fuerzaEmpuje: 3
