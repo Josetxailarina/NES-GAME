@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1838580665006001652}
   - component: {fileID: 374479743406114453}
   - component: {fileID: 3739529862392289181}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bola1
   m_TagString: BolaFuego
   m_Icon: {fileID: 0}
@@ -167,8 +167,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lanzado: 0
-  distanciaReset: 9
-  fireVelocity: 10
+  distanciaReset: 15
+  fireVelocity: 9
 --- !u!50 &3739529862392289181
 Rigidbody2D:
   serializedVersion: 4

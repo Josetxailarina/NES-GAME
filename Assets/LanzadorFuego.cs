@@ -8,13 +8,13 @@ public class LanzadorFuego : MonoBehaviour
 
 
 
-    public void LanzarFuego(Vector3 posicionFuego, bool derecha)
+    public void LanzarFuego(Vector3 posicionFuego, Vector2 direccion)
     {
         foreach (BolaFuego script in bolasScript)
         {
             if (!script.lanzado)
             {
-                script.LanzarFuego(posicionFuego, derecha);
+                script.LanzarFuego(posicionFuego, direccion);
                 break;
             }
         }

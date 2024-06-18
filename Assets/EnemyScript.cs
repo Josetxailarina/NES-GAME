@@ -91,7 +91,7 @@ public class EnemyScript : MonoBehaviour
 
     }
 
-    void EnemyDie()
+   public virtual void EnemyDie()
     {
         dieEffect.transform.position = transform.position;
         dieEffect.transform.rotation = transform.rotation;

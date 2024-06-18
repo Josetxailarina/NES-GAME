@@ -61,22 +61,18 @@ public class BolaFuego : MonoBehaviour
         rb.excludeLayers |= (1 << layerDamage);
     }
 
-    public void LanzarFuego(Vector3 posicionSuriken, bool derecha)
+    public void LanzarFuego(Vector3 posicionSuriken, Vector2 Direccion)
     {
         int layerSlash = LayerMask.NameToLayer("Slash");
         rb.excludeLayers |= (1 << layerSlash);
         lanzado = true;
         transform.position = posicionSuriken;
 
-        if (derecha)
-        {
-            rb.velocity = new Vector2(1,0) * fireVelocity;
-        }
-        else
-        {
-            rb.velocity = new Vector2(-1, 0) * fireVelocity;
+       rb.velocity = Direccion * fireVelocity;
+        
+       
 
-        }
+        
         StartCoroutine(TiempoInrreflejable());
     }
     IEnumerator TiempoInrreflejable()

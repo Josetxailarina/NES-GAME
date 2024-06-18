@@ -7,12 +7,13 @@ public class ShieldBoy : EnemyScript
     public AudioSource reboteSound;
     private bool tumbado;
     public float intervaloDisparos = 5f; // Cambia esto al número de segundos que quieras
-    private float tiempoPasado = 0f;
+    private float tiempoPasado = 2f;
     private Animator anim;
     public AudioSource chargingSound;
     public AudioSource fireSound;
     private LanzadorFuego fuegoScript;
     private bool onScreen;
+    private Vector2 direccionFuego = Vector2.right;
     public override void Awake()
     {
         base.Awake();
@@ -27,9 +28,9 @@ public class ShieldBoy : EnemyScript
         }
         else
         {
-            onScreen=true;
+            onScreen = true;
         }
-        if (onScreen&&!tumbado)
+        if (onScreen && !tumbado)
         {
             base.Update();
             tiempoPasado += Time.deltaTime;
@@ -64,19 +65,27 @@ public class ShieldBoy : EnemyScript
         anim.SetBool("Tumbado", false);
 
     }
-    
+
     public void Disparar()
     {
         fireSound.Play();
         anim.SetBool("Charging", false);
-        fuegoScript.LanzarFuego(transform.position-new Vector3(0.1f,0.3f,0), isFacingRight);
+        if (isFacingRight)
+        {
+            direccionFuego = Vector2.right;
+        }
+        else
+        {
+            direccionFuego = Vector2.left;
+        }
+        fuegoScript.LanzarFuego(transform.position - new Vector3(0.1f, 0.3f, 0), direccionFuego);
     }
 
     public override void ResetEnemy()
     {
         base.ResetEnemy();
         tumbado = false;
-        anim.SetBool("Charging",false);
+        anim.SetBool("Charging", false);
         anim.SetBool("Tumbado", false);
         onScreen = false;
 
