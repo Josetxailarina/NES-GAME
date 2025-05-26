@@ -46,7 +46,7 @@ public class SlashScript : MonoBehaviour
             }
             else if (collision.CompareTag("BolaFuego"))
             {
-                collision.GetComponent<BolaFuego>().Reflejar(direccionReflejo);
+                collision.GetComponent<FireBall>().Reflejar(direccionReflejo);
             }
         }
 

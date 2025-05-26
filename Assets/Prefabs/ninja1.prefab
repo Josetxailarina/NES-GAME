@@ -239,15 +239,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9751e99782b20346909ca9f97a2a74f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actualHealth: 2
+  currentHealth: 3
   damageEffectAnim: {fileID: 0}
-  dieEffect: {fileID: 0}
+  damageTintColor: {r: 1, g: 1, b: 1, a: 1}
+  explosionEffect: {fileID: 0}
   dieSound: {fileID: 0}
   hitSound: {fileID: 0}
-  colorDamage: {r: 0.98823535, g: 0.98823535, b: 0.98823535, a: 1}
   speed: 2
   jumpForce: 4
   throwInterval: 0.8
   jumpInterval: 1
-  moveDistance: 5
-  fuerzaEmpuje: 3
+  moveDistance: 1
+  knockbackForce: 3

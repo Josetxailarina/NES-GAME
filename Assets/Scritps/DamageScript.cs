@@ -6,7 +6,7 @@ public class DamageScript : MonoBehaviour
 {
     public PlayerController playerController;
     public Animator hitAnimator;
-    private int multiplicadorKnockUp;
+    private int knockUpMultiplier;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!playerController.parpadeando)
@@ -15,20 +15,20 @@ public class DamageScript : MonoBehaviour
             hitAnimator.SetTrigger("Hit");
             if (collision.CompareTag("ShieldBoy"))
             {
-                multiplicadorKnockUp = 2;
+                knockUpMultiplier = 2;
             }
             else
             {
-                multiplicadorKnockUp = 1;
+                knockUpMultiplier = 1;
             }
             if (collision.gameObject.transform.position.x > transform.position.x)
             {
                 
-                StartCoroutine(playerController.TakeDamage(new Vector2(-1*multiplicadorKnockUp,0)));
+                StartCoroutine(playerController.TakeDamage(new Vector2(-1*knockUpMultiplier,0)));
             }
             else
             {
-                StartCoroutine(playerController.TakeDamage(new Vector2(1 * multiplicadorKnockUp, 0)));
+                StartCoroutine(playerController.TakeDamage(new Vector2(1 * knockUpMultiplier, 0)));
 
             }
 

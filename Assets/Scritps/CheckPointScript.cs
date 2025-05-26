@@ -1,15 +1,14 @@
 using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CheckPointScript : MonoBehaviour
 {
     private PlayerController playerController;
     private AudioSource audioCheck;
-    private bool levantada;
+    private bool isRaised;
     private Animator anim;
-    public CinemachineVirtualCamera virtualCamera;
+
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
     private void Start()
     {
@@ -19,12 +18,12 @@ public class CheckPointScript : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Samurai")&&!levantada)
+        if (collision.gameObject.CompareTag("Samurai")&&!isRaised)
         {
             anim.SetBool("Up", true);
             audioCheck.Play();
             playerController.posicionLastCheckpoint = transform.position - new Vector3(0.5f, 0.5f, 0);
-            levantada = true;
+            isRaised = true;
             if (virtualCamera != null)
             {
                 virtualCamera.Priority = 11;

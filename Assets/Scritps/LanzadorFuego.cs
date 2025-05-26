@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class LanzadorFuego : MonoBehaviour
 {
-    public BolaFuego[] bolasScript;
+    public FireBall[] bolasScript;
 
 
 
     public void LanzarFuego(Vector3 posicionFuego, Vector2 direccion)
     {
-        foreach (BolaFuego script in bolasScript)
+        foreach (FireBall script in bolasScript)
         {
-            if (!script.lanzado)
+            if (!script.isLaunched)
             {
                 script.LanzarFuego(posicionFuego, direccion);
                 break;

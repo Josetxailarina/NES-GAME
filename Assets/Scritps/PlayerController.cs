@@ -185,19 +185,12 @@ public class PlayerController : MonoBehaviour
         {
             if (GameManagerScript.modoJuego == GameMode.Play)
             {
-                jumpButtonHeld = true; // Indicar que el botón de salto está presionado
-                                       //if (doubleJumpReady)
-                                       //{
-                                       //    PerformJump();
-                                       //}
-                                       //else
-                                       //{
+                jumpButtonHeld = true; 
                 jumpBufferCounter = jumpBufferTime;
-                //}
             }
             else if (GameManagerScript.modoJuego == GameMode.Menu)
             {
-                gameOverScript.Aceptar();
+                gameOverScript.ConfirmAction();
             }
 
         }
@@ -325,7 +318,7 @@ public class PlayerController : MonoBehaviour
             upPressed = true;
             if (GameManagerScript.modoJuego == GameMode.Menu)
             {
-                gameOverScript.Subir();
+                gameOverScript.GoUp();
             }
         }
         if (callBack.canceled)
@@ -340,7 +333,7 @@ public class PlayerController : MonoBehaviour
             downPressed = true;
             if (GameManagerScript.modoJuego == GameMode.Menu)
             {
-                gameOverScript.Bajar();
+                gameOverScript.GoDown();
             }
         }
         if (callBack.canceled)

@@ -3,33 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Device;
 
-public class BolaJefe : EnemyScript
+public class BossBall : EnemyScript
 {
-    public Sprite bolaRota;
-    public Sprite bolaBien;
-    public static int bolasRotas=0;
-    public GameObject[] explosiones;
-    public AudioSource music;
-    public GameObject credits;
-    public AudioSource creditsMusic;
-    private bool onScreen;
-    public float intervaloDisparos = 5f;
-    public float tiempoPasado = 0f;
-    public LanzadorFuego lanzadorScript;
-    private Vector3 direccionFuego= Vector3.right;
-    public SpriteRenderer gameoverRender;
-    public Sprite endSprite;
-    public GameObject menu;
-    private Collider2D collider;
-    public AudioSource sonidoLanzarFuego;
+    public static int bolasRotas = 0;
+
+    [SerializeField] private Sprite brokenBall;
+    [SerializeField] private Sprite intactBall;
+    [SerializeField] private GameObject[] explosionObjects;
+    [SerializeField] private AudioSource music;
+    [SerializeField] private GameObject credits;
+    [SerializeField] private AudioSource creditsMusic;
+    [SerializeField] private float shotCooldown = 3f;
+    [SerializeField] private float currentCooldown = 0f;
+    [SerializeField] private LanzadorFuego lanzadorScript;
+    [SerializeField] private SpriteRenderer gameoverRender;
+    [SerializeField] private Sprite endSprite;
+    [SerializeField] private GameObject menu;
+    [SerializeField] private AudioSource fireShotSound;
+
     private bool muerto;
-    // Start is called before the first frame update
+    private bool onScreen;
+    private Vector3 direccionFuego = Vector3.right;
+    private Collider2D collider;
+
     void Start()
     {
         collider = GetComponent<Collider2D>();
     }
 
-    // Update is called once per frame
     public override void Update()
     {
         if (Vector3.Distance(samurai.transform.position, transform.position) > 15)
@@ -43,32 +44,29 @@ public class BolaJefe : EnemyScript
         if (onScreen&&!muerto)
         {
            
-            tiempoPasado += Time.deltaTime;
+            currentCooldown += Time.deltaTime;
 
-            if (tiempoPasado >= intervaloDisparos)
+            if (currentCooldown >= shotCooldown)
             {
-                tiempoPasado = tiempoPasado % intervaloDisparos;
+                currentCooldown = currentCooldown % shotCooldown;
                 direccionFuego = samurai.transform.position - transform.position;
                 lanzadorScript.LanzarFuego(transform.position, direccionFuego.normalized);
-                sonidoLanzarFuego.Play();
+                fireShotSound.Play();
             }
         }
     }
     public override void ResetEnemy()
     {
         base.ResetEnemy();
-        sprite.sprite = bolaBien;
+        sprite.sprite = intactBall;
         bolasRotas = 0;
         collider.enabled = true;
         muerto = false;
     }
-    public override void EnemyDie()
+    public override void Die()
     {
-        dieEffect.transform.position = transform.position;
-        dieEffect.transform.rotation = transform.rotation;
-        dieEffect.SetTrigger("Hit");
-        dieSound.Play();
-        sprite.sprite = bolaRota;
+        PlayEffect(explosionEffect, dieSound);
+        sprite.sprite = brokenBall;
         bolasRotas++;
         collider.enabled = false;
         muerto = true;
@@ -83,21 +81,21 @@ public class BolaJefe : EnemyScript
         Time.timeScale = 0;
         GameManagerScript.modoJuego = GameMode.GameOver;
         music.Stop();
-        explosiones[0].SetActive(true);
+        explosionObjects[0].SetActive(true);
         yield return new WaitForSecondsRealtime(0.2f);
-        explosiones[1].SetActive(true);
+        explosionObjects[1].SetActive(true);
         yield return new WaitForSecondsRealtime(0.2f);
-        explosiones[2].SetActive(true);
+        explosionObjects[2].SetActive(true);
         yield return new WaitForSecondsRealtime(0.2f);
-        explosiones[3].SetActive(true);
+        explosionObjects[3].SetActive(true);
         yield return new WaitForSecondsRealtime(0.2f);
-        explosiones[4].SetActive(true);
+        explosionObjects[4].SetActive(true);
         yield return new WaitForSecondsRealtime(0.2f);
-        explosiones[5].SetActive(true);
+        explosionObjects[5].SetActive(true);
         yield return new WaitForSecondsRealtime(0.2f);
-        explosiones[6].SetActive(true);
+        explosionObjects[6].SetActive(true);
         yield return new WaitForSecondsRealtime(0.2f);
-        explosiones[7].SetActive(true);
+        explosionObjects[7].SetActive(true);
         credits.SetActive(true);
         creditsMusic.Play();
         gameoverRender.sprite = endSprite;
