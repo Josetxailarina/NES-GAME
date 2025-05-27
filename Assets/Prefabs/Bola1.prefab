@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3739529862392289181}
   m_Layer: 7
   m_Name: Bola1
-  m_TagString: BolaFuego
+  m_TagString: FireBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -166,9 +166,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1c1bd874ff7cac459efd89c7c07b677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lanzado: 0
-  distanciaReset: 15
+  resetDistance: 15
   fireVelocity: 9
+  isLaunched: 0
 --- !u!50 &3739529862392289181
 Rigidbody2D:
   serializedVersion: 4

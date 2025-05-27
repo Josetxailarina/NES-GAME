@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     private float moveInput;
     private float previousMoveInput = 0;
     public bool mirandoIzqui;
-    [SerializeField] private PlayerHealth playerHealthScript;
+    [SerializeField] private PlayerLives playerHealthScript;
     #endregion
 
     #region SALTO
@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     [Header("ATAQUE")]
 
     public Animator playerAnimator;
-    public Vector2 direccionAtaque;
+    public Vector2 attackDirection;
     public bool isAttackLaunched;
     public float attackCD = 0.5f;
     private float currentAttackCD;
@@ -52,14 +52,14 @@ public class PlayerController : MonoBehaviour
     private Vector2 gravityVector;
     public AnimatorOverrideController[] animatorOverrideController;
     public bool isBeingKnockedBack;
-    [HideInInspector] public PlayerHealth playerHealth;
+    [HideInInspector] public PlayerLives playerHealth;
 
     #endregion
 
 
     private void Start()
     {
-        playerHealth = GetComponent<PlayerHealth>();
+        playerHealth = GetComponent<PlayerLives>();
         isTouchingGround = true;
         rb = GetComponent<Rigidbody2D>();
         gravityVector = new Vector2(0, -Physics2D.gravity.y);
@@ -249,12 +249,12 @@ public class PlayerController : MonoBehaviour
                 if (upPressed)
                 {
                     playerAnimator.runtimeAnimatorController = animatorOverrideController[1];
-                    direccionAtaque = Vector2.up;
+                    attackDirection = Vector2.up;
                 }
                 else if (downPressed&&!isTouchingGround)
                 {
                     playerAnimator.runtimeAnimatorController = animatorOverrideController[2];
-                    direccionAtaque = Vector2.down;
+                    attackDirection = Vector2.down;
 
 
                 }
@@ -263,12 +263,12 @@ public class PlayerController : MonoBehaviour
                     playerAnimator.runtimeAnimatorController = animatorOverrideController[0];
                     if (mirandoIzqui)
                     {
-                        direccionAtaque = Vector2.left;
+                        attackDirection = Vector2.left;
 
                     }
                     else
                     {
-                        direccionAtaque = Vector2.right;
+                        attackDirection = Vector2.right;
 
                     }
 

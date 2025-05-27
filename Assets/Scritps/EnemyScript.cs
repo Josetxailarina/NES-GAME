@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyScript : MonoBehaviour
+public class EnemyScript : MonoBehaviour, IDamagable
 {
     [SerializeField] private int currentHealth = 3;
     [SerializeField] private Animator damageEffectAnim;

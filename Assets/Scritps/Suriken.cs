@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Suriken : MonoBehaviour
+public class Suriken : MonoBehaviour, IDeflectable
 {
     private Rigidbody2D rb;
     public float fuerzaSuriken;
@@ -51,7 +51,7 @@ public class Suriken : MonoBehaviour
         rb.excludeLayers &= ~(1 << layerSamurai);
 
     }
-    public void Reflejar(Vector2 direccionReflejo)
+    public void Deflect(Vector2 direccionReflejo)
     {
         reflejado = true;
         rb.gravityScale = 0;

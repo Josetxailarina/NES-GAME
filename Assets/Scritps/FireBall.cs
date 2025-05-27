@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireBall : MonoBehaviour
+public class FireBall : MonoBehaviour, IDeflectable
 {
     [SerializeField] private float resetDistance = 15;
     [SerializeField] private float fireVelocity = 9;
@@ -10,7 +10,7 @@ public class FireBall : MonoBehaviour
     private Rigidbody2D rb;
     private GameObject samurai;
     private Vector3 initialPosition;
-    private bool isReflected;
+    private bool isDeflected;
 
     public bool isLaunched;
 
@@ -26,21 +26,22 @@ public class FireBall : MonoBehaviour
         if (Vector3.Distance(samurai.transform.position, transform.position) > resetDistance)
         {
             ResetFireBall();
-
         }
-
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if ((collision.gameObject.CompareTag("NinjaM")) && isReflected)
+        if (isDeflected)
         {
-            collision.GetComponent<EnemyScript>().TakeDamage(rb.velocity.normalized);
-            ResetFireBall();
-        }
-        else if (collision.gameObject.CompareTag("ShieldBoy") && isReflected)
-        {
-            collision.GetComponent<ShieldBoy>().GoRomperGuardia();
-            ResetFireBall();
+            if (collision.gameObject.CompareTag("NinjaM"))
+            {
+                collision.GetComponent<EnemyScript>().TakeDamage(rb.velocity.normalized);
+                ResetFireBall();
+            }
+            else if (collision.gameObject.CompareTag("ShieldBoy"))
+            {
+                collision.GetComponent<ShieldBoy>().GoRomperGuardia();
+                ResetFireBall();
+            } 
         }
     }
 
@@ -49,14 +50,13 @@ public class FireBall : MonoBehaviour
         transform.position = initialPosition;
         rb.velocity = Vector2.zero;
         isLaunched = false;
-        isReflected = false;
+        isDeflected = false;
         int layerDamage = LayerMask.NameToLayer("DamageCollider");
         rb.excludeLayers &= ~(1 << layerDamage);
-
     }
-    public void Reflejar(Vector2 direccionReflejo)
+    public void Deflect(Vector2 direccionReflejo)
     {
-        isReflected = true;
+        isDeflected = true;
         rb.velocity = direccionReflejo * 10;
         int layerDamage = LayerMask.NameToLayer("DamageCollider");
         rb.excludeLayers |= (1 << layerDamage);
@@ -68,12 +68,7 @@ public class FireBall : MonoBehaviour
         rb.excludeLayers |= (1 << layerSlash);
         isLaunched = true;
         transform.position = posicionSuriken;
-
-       rb.velocity = Direccion * fireVelocity;
-        
-       
-
-        
+        rb.velocity = Direccion * fireVelocity;
         StartCoroutine(TiempoInrreflejable());
     }
     IEnumerator TiempoInrreflejable()

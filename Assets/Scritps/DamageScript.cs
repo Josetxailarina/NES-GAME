@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DamageScript : MonoBehaviour
 {
-    [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private PlayerLives playerHealth;
     [SerializeField] private Animator hitEffectAnim;
     private int knockUpMultiplier;
     private void OnTriggerEnter2D(Collider2D collision)

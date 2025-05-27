@@ -6341,7 +6341,7 @@ MonoBehaviour:
   coyoteTime: 0.1
   coyoteTimeCounter: 0
   playerAnimator: {fileID: 1137642998}
-  direccionAtaque: {x: 0, y: 0}
+  attackDirection: {x: 0, y: 0}
   isAttackLaunched: 0
   attackCD: 0.2
   posicionLastCheckpoint: {x: 0, y: 0, z: 0}
@@ -6479,10 +6479,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1137642990}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b97e3c98d8165b145b1adf29fb7ba608, type: 3}
+  m_Script: {fileID: 11500000, guid: d50d62f63def66843aff294d0eee19e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerLives: 3
+  currentLives: 3
   livesNumberSprites:
   - {fileID: 21300000, guid: 16de4d34df3a6714da1199abf84b100f, type: 3}
   - {fileID: 21300000, guid: b834d4a0a231f064fa71217ec7b276c7, type: 3}
@@ -7474,6 +7474,7 @@ MonoBehaviour:
   playerDamageSound: {fileID: 645053425}
   playerAttackSound: {fileID: 2083658505}
   jumpSound: {fileID: 1516354987}
+  hitSound: {fileID: 1066236354}
 --- !u!1001 &1233140969
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8258,8 +8259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ee6285eaad24764a9931a6f86890c07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animHit: {fileID: 734878227}
-  hitSound: {fileID: 1066236354}
+  hitEffectAnimator: {fileID: 734878227}
   playerController: {fileID: 1137642996}
 --- !u!1 &1356551602
 GameObject:

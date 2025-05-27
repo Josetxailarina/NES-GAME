@@ -12,6 +12,7 @@ public class SoundsManager : MonoBehaviour
     public AudioSource playerDamageSound;
     public AudioSource playerAttackSound;
     public AudioSource jumpSound;
+    public AudioSource hitSound;
 
     private void Awake()
     {
