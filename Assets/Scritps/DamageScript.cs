@@ -1,37 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DamageScript : MonoBehaviour
 {
-    public PlayerController playerController;
-    public Animator hitAnimator;
+    [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private Animator hitEffectAnim;
     private int knockUpMultiplier;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!playerController.parpadeando)
+        if (!playerHealth.isFlashing)
         {
-            hitAnimator.transform.position = playerController.transform.position;
-            hitAnimator.SetTrigger("Hit");
-            if (collision.CompareTag("ShieldBoy"))
-            {
-                knockUpMultiplier = 2;
-            }
-            else
-            {
-                knockUpMultiplier = 1;
-            }
-            if (collision.gameObject.transform.position.x > transform.position.x)
-            {
-                
-                StartCoroutine(playerController.TakeDamage(new Vector2(-1*knockUpMultiplier,0)));
-            }
-            else
-            {
-                StartCoroutine(playerController.TakeDamage(new Vector2(1 * knockUpMultiplier, 0)));
+            hitEffectAnim.transform.position = playerHealth.transform.position;
+            hitEffectAnim.SetTrigger("Hit");
+            HandlePlayerDamage(collision);
+        }
+    }
 
-            }
-
+    private void HandlePlayerDamage(Collider2D collision)
+    {
+        if (collision.CompareTag("ShieldBoy"))
+        {
+            knockUpMultiplier = 2;
+        }
+        else
+        {
+            knockUpMultiplier = 1;
+        }
+        if (collision.gameObject.transform.position.x > transform.position.x)
+        {
+            playerHealth.TakeDamage(new Vector2(-1 * knockUpMultiplier, 0));
+        }
+        else
+        {
+            playerHealth.TakeDamage(new Vector2(1 * knockUpMultiplier, 0));
         }
     }
 }

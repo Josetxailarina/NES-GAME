@@ -1,20 +1,13 @@
 
 
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-    #region OTRAS
-    [Header("STATS")]
-    public int vidas = 3;
-    public Sprite[] vidasImgs;
-    public SpriteRenderer vidaSpriteRenderer;
-    #endregion
+   
+
     #region MOVIMIENTO
     [Header("MOVIMIENTO")]
     public Rigidbody2D rb;
@@ -23,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private float moveInput;
     private float previousMoveInput = 0;
     public bool mirandoIzqui;
+    [SerializeField] private PlayerHealth playerHealthScript;
     #endregion
 
     #region SALTO
@@ -36,17 +30,15 @@ public class PlayerController : MonoBehaviour
     private float jumpBufferCounter;
     public float coyoteTimeCounter;
     private bool jumpButtonHeld;
-    public AudioSource jumpSound;
-    public bool tocandoSuelo { get; set; }
+    public bool isTouchingGround { get; set; }
     #endregion
 
     #region ATAQUE
     [Header("ATAQUE")]
 
-    public Animator anim;
+    public Animator playerAnimator;
     public Vector2 direccionAtaque;
-    public bool impulsoAttack;
-    public AudioSource attackSound;
+    public bool isAttackLaunched;
     public float attackCD = 0.5f;
     private float currentAttackCD;
     private bool upPressed;
@@ -59,25 +51,20 @@ public class PlayerController : MonoBehaviour
     public Vector3 posicionLastCheckpoint;
     private Vector2 gravityVector;
     public AnimatorOverrideController[] animatorOverrideController;
-    public AudioSource spawnSound;
-    public bool damaged;
-    public bool parpadeando;
-    public SpriteRenderer sprite;
-    public AudioSource damageSound;
-    public AudioSource musicSound;
-    public AudioSource deadMusicSound;
-    public GameObject gameOverPanel;
-    public GameOverMenu gameOverScript;
+    public bool isBeingKnockedBack;
+    [HideInInspector] public PlayerHealth playerHealth;
+
     #endregion
 
 
     private void Start()
     {
-        tocandoSuelo = true;
+        playerHealth = GetComponent<PlayerHealth>();
+        isTouchingGround = true;
         rb = GetComponent<Rigidbody2D>();
         gravityVector = new Vector2(0, -Physics2D.gravity.y);
         playerInput = GetComponent<PlayerInput>();
-       anim = GetComponent<Animator>();
+       playerAnimator = GetComponent<Animator>();
         posicionLastCheckpoint = transform.position;
     }
 
@@ -101,11 +88,10 @@ public class PlayerController : MonoBehaviour
         {
             currentAttackCD -= Time.deltaTime;
         }
-
             // Actualiza el animator solo si el estado de movimiento ha cambiado
-            if (moveInput != previousMoveInput&&!damaged&&GameManagerScript.modoJuego == GameMode.Play)
+            if (moveInput != previousMoveInput&&!isBeingKnockedBack && GameManagerScript.modoJuego == GameMode.Play)
             {
-                anim.SetBool("Running", moveInput != 0);
+                playerAnimator.SetBool("Running", moveInput != 0);
                 previousMoveInput = moveInput; // Actualiza el estado previo
                 if (moveInput != 0)
                 {
@@ -122,7 +108,7 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
-            if (!tocandoSuelo)
+            if (!isTouchingGround)
             {
                 coyoteTimeCounter += Time.deltaTime;
             }
@@ -135,20 +121,19 @@ public class PlayerController : MonoBehaviour
             {
                 jumpBufferCounter -= Time.deltaTime;
             }
-        
     }
     private void FixedUpdate()
     {
-        anim.SetFloat("Yvelocity",rb.velocity.y);
-        // Movimiento horizontal
-        if (!damaged)
+        playerAnimator.SetFloat("Yvelocity",rb.velocity.y);
+
+        if (!isBeingKnockedBack)
         {
             rb.velocity = new Vector2(moveInput * moveForce, rb.velocity.y);
 
         }
 
         // Aplicar gravedad adicional para una caída más rápida
-        if (rb.velocity.y < 0 || (!jumpButtonHeld && !impulsoAttack))
+        if (rb.velocity.y < 0 || (!jumpButtonHeld && !isAttackLaunched))
             {
                 rb.velocity -= gravityVector * multiplierFall * Time.deltaTime;
             }
@@ -160,7 +145,7 @@ public class PlayerController : MonoBehaviour
             }
 
             // Realizar el salto si hay un buffer de salto activo y está dentro del tiempo de coyote
-            if (jumpBufferCounter > 0 && (tocandoSuelo || coyoteTimeCounter < coyoteTime))
+            if (jumpBufferCounter > 0 && (isTouchingGround || coyoteTimeCounter < coyoteTime))
             {
                 PerformJump();
                 jumpBufferCounter = 0; // Resetear el buffer de salto después de saltar
@@ -171,28 +156,18 @@ public class PlayerController : MonoBehaviour
     public void ResetSamurai()
     {
         transform.position = posicionLastCheckpoint;
-        anim.SetTrigger("Reset");
-        vidas = 3;
-        vidaSpriteRenderer.sprite = vidasImgs[vidas];
-        musicSound.Play();
-        deadMusicSound.Stop();
-
-
+        playerAnimator.SetTrigger("Reset");
+        playerHealthScript.ResetLives();
     }
     public void Jump(InputAction.CallbackContext callBack)
     {
-        if (callBack.performed&&!damaged)
+        if (callBack.performed&&!isBeingKnockedBack)
         {
             if (GameManagerScript.modoJuego == GameMode.Play)
             {
                 jumpButtonHeld = true; 
                 jumpBufferCounter = jumpBufferTime;
             }
-            else if (GameManagerScript.modoJuego == GameMode.Menu)
-            {
-                gameOverScript.ConfirmAction();
-            }
-
         }
 
         if (callBack.canceled)
@@ -207,29 +182,29 @@ public class PlayerController : MonoBehaviour
 
     public void PerformJump()
     {
-        if (!damaged && GameManagerScript.modoJuego == GameMode.Play)
+        if (!isBeingKnockedBack && GameManagerScript.modoJuego == GameMode.Play)
         {
             float actualJumpForce = jumpButtonHeld ? jumpForce : jumpForce * 0.7f;
             rb.velocity = new Vector2(rb.velocity.x, actualJumpForce);
-            tocandoSuelo = false;
+            isTouchingGround = false;
             coyoteTimeCounter = coyoteTime; // Resetear el tiempo de coyote
-            impulsoAttack = false;
-            jumpSound.Play();
-            anim.SetBool("Jumping", true); 
+            isAttackLaunched = false;
+            SoundsManager.Instance.jumpSound.Play();
+            playerAnimator.SetBool("Jumping", true); 
         }
         
     }
     public void PerformJumpAttack()
     {
 
-        if (!damaged && GameManagerScript.modoJuego == GameMode.Play)
+        if (!isBeingKnockedBack && GameManagerScript.modoJuego == GameMode.Play)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            tocandoSuelo = false;
+            isTouchingGround = false;
             coyoteTimeCounter = coyoteTime; // Resetear el tiempo de coyote
-            impulsoAttack = true;
-            jumpSound.Play();
-            anim.SetBool("Jumping", true); 
+            isAttackLaunched = true;
+            SoundsManager.Instance.jumpSound.Play();
+            playerAnimator.SetBool("Jumping", true); 
         }
 
     }
@@ -237,7 +212,7 @@ public class PlayerController : MonoBehaviour
     public void ResetJump()
     {
         rb.velocity = new Vector2(rb.velocity.x, jumpForce * 0.7f);
-        impulsoAttack = true;
+        isAttackLaunched = true;
         
         //jumpParticles.Play();
 
@@ -266,26 +241,26 @@ public class PlayerController : MonoBehaviour
 
     public void Attack(InputAction.CallbackContext callBack)
     {
-        if (callBack.performed && !damaged && GameManagerScript.modoJuego == GameMode.Play)
+        if (callBack.performed && !isBeingKnockedBack && GameManagerScript.modoJuego == GameMode.Play)
         {
             
             if (currentAttackCD <= 0)
             {
                 if (upPressed)
                 {
-                    anim.runtimeAnimatorController = animatorOverrideController[1];
+                    playerAnimator.runtimeAnimatorController = animatorOverrideController[1];
                     direccionAtaque = Vector2.up;
                 }
-                else if (downPressed&&!tocandoSuelo)
+                else if (downPressed&&!isTouchingGround)
                 {
-                    anim.runtimeAnimatorController = animatorOverrideController[2];
+                    playerAnimator.runtimeAnimatorController = animatorOverrideController[2];
                     direccionAtaque = Vector2.down;
 
 
                 }
                 else
                 {
-                    anim.runtimeAnimatorController = animatorOverrideController[0];
+                    playerAnimator.runtimeAnimatorController = animatorOverrideController[0];
                     if (mirandoIzqui)
                     {
                         direccionAtaque = Vector2.left;
@@ -298,10 +273,9 @@ public class PlayerController : MonoBehaviour
                     }
 
                 }
-                anim.SetTrigger("Attack");
+                playerAnimator.SetTrigger("Attack");
                 currentAttackCD = attackCD;
-                attackSound.Play();
-
+                SoundsManager.Instance.playerAttackSound.Play();
             }
 
         }
@@ -316,10 +290,6 @@ public class PlayerController : MonoBehaviour
         if (callBack.started)
         {
             upPressed = true;
-            if (GameManagerScript.modoJuego == GameMode.Menu)
-            {
-                gameOverScript.GoUp();
-            }
         }
         if (callBack.canceled)
         {
@@ -331,15 +301,10 @@ public class PlayerController : MonoBehaviour
         if (callBack.started)
         {
             downPressed = true;
-            if (GameManagerScript.modoJuego == GameMode.Menu)
-            {
-                gameOverScript.GoDown();
-            }
         }
         if (callBack.canceled)
         {
             downPressed = false;
-
         }
     }
     public void StartKnockUp(Vector2 direction)
@@ -348,65 +313,10 @@ public class PlayerController : MonoBehaviour
     }
     public IEnumerator KnockUp(Vector2 direction)
     {
-        damaged = true;
+        isBeingKnockedBack = true;
         rb.velocity = direction * 10;
-        print("knok up antes de la pausa");
         yield return new WaitForSecondsRealtime(0.08f);
-        print("acaba knockup");
-        damaged = false;
-      
-            
-        
-    }
-
-    public IEnumerator TakeDamage(Vector2 direccion)
-    {
-        if (vidas>0)
-        {
-            vidas--;
-            vidaSpriteRenderer.sprite = vidasImgs[vidas];
-        }
-        else
-        {
-            damageSound.Play();
-
-            anim.SetTrigger("Dead");
-            Time.timeScale = 0;
-            musicSound.Stop();
-            deadMusicSound.Play();
-            GameManagerScript.modoJuego = GameMode.GameOver;
-            yield return new WaitForSecondsRealtime(1.7f);
-            gameOverPanel.SetActive(true);
-            GameManagerScript.modoJuego = GameMode.Menu;
-
-            yield break;
-        }
-        
-        damageSound.Play(); 
-        damaged = true;
-        parpadeando = true;
-        rb.velocity = direccion*10;
-        Time.timeScale = 0;
-        yield return new WaitForSecondsRealtime(0.2f);
-        Time.timeScale = 1;
-
-        yield return new WaitForSecondsRealtime(0.2f);
-        sprite.enabled = false;
-        damaged = false;
-
-        yield return new WaitForSecondsRealtime(0.1f);
-
-        sprite.enabled = true;
-        yield return new WaitForSecondsRealtime(0.1f);
-        sprite.enabled = false;
-        yield return new WaitForSecondsRealtime(0.1f);
-        sprite.enabled = true;
-        yield return new WaitForSecondsRealtime(0.1f);
-        sprite.enabled = false;
-        yield return new WaitForSecondsRealtime(0.1f);
-        sprite.enabled = true;
-        parpadeando = false;
-
+        isBeingKnockedBack = false;
     }
 
 }

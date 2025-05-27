@@ -4,32 +4,36 @@ using UnityEngine;
 
 public class PiesCollider : MonoBehaviour
 {
-    public PlayerController controllerScript;
-    private Vector3 ultimaPosicionSegura;
-    public AudioSource aterrizajeSound;
+    [SerializeField] private PlayerController controllerScript;
+    [SerializeField] private AudioSource groundContactSound;
+    private Vector3 lastSafePosition;
+
     private void Update()
     {
-        if (transform.position.y < -10)
-        {
-            print("Limite alcanzado, ultima posicion segura: " + ultimaPosicionSegura);
-            controllerScript.rb.velocity = Vector3.zero;
-            controllerScript.transform.position = ultimaPosicionSegura;
-            StartCoroutine(controllerScript.TakeDamage(Vector2.zero));
-        }
+        CheckIfFalling();
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        controllerScript.tocandoSuelo = true;
-        controllerScript.anim.SetBool("Jumping",false);
-        ultimaPosicionSegura = transform.position;
-        aterrizajeSound.Play();
-        controllerScript.impulsoAttack = false;
+        controllerScript.isTouchingGround = true;
+        controllerScript.playerAnimator.SetBool("Jumping",false);
+        lastSafePosition = transform.position;
+        groundContactSound.Play();
+        controllerScript.isAttackLaunched = false;
 
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        controllerScript.tocandoSuelo = false;
-        controllerScript.anim.SetBool("Jumping", true);
-
+        controllerScript.isTouchingGround = false;
+        controllerScript.playerAnimator.SetBool("Jumping", true);
+    }
+    private void CheckIfFalling()
+    {
+        if (transform.position.y < -10)
+        {
+            controllerScript.rb.velocity = Vector3.zero;
+            controllerScript.transform.position = lastSafePosition;
+            controllerScript.playerHealth.TakeDamage(Vector2.zero);
+        }
     }
 }
