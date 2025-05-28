@@ -3,6 +3,7 @@ using UnityEngine;
 public class PiesCollider : MonoBehaviour
 {
     [SerializeField] private PlayerController controllerScript;
+    [SerializeField] private PlayerAttack playerAttack;
     [SerializeField] private AudioSource groundContactSound;
     private Vector3 lastSafePosition;
 
@@ -17,7 +18,7 @@ public class PiesCollider : MonoBehaviour
         controllerScript.playerAnimator.SetBool("Jumping",false);
         lastSafePosition = transform.position;
         groundContactSound.Play();
-        controllerScript.isAttackLaunched = false;
+        playerAttack.isAttackLaunched = false;
 
     }
     private void OnTriggerExit2D(Collider2D collision)

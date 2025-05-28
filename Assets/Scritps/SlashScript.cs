@@ -4,27 +4,27 @@ public class SlashScript : MonoBehaviour
 {
     [SerializeField] private Animator hitEffectAnimator;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private PlayerAttack playerAttack;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         SoundsManager.Instance.hitSound.Play();
         IDamagable damagable = collision.GetComponent<IDamagable>();
+        IDeflectable deflectable = collision.GetComponent<IDeflectable>();
 
-        
-        if (collision.CompareTag("Suriken") || collision.CompareTag("FireBall"))
+        if (deflectable != null)
         {
             PlayHitEffect(collision);
-            Vector2 deflectDirection;
-            deflectDirection = GetDeflectDirection();
-            collision.GetComponent<IDeflectable>().Deflect(deflectDirection);
+            Vector2 deflectDirection = playerAttack.attackDirection;
+            deflectable.Deflect(deflectDirection);
         }
 
-        else if ( damagable != null)
+        else if (damagable != null)
         {
             if (playerController.transform.position.x > collision.transform.position.x)
             {
                 damagable.TakeDamage(Vector2.left);
-                if (playerController.attackDirection != Vector2.down && playerController.attackDirection != Vector2.up)
+                if (IsHorizontalAttack())
                 {
                     playerController.StartKnockUp(Vector2.right);
                 }
@@ -32,33 +32,23 @@ public class SlashScript : MonoBehaviour
             else
             {
                 damagable.TakeDamage(Vector2.right);
-                if (playerController.attackDirection != Vector2.down && playerController.attackDirection != Vector2.up)
+                if (IsHorizontalAttack())
                 {
                     playerController.StartKnockUp(Vector2.left);
                 }
             }
         }
 
-        if (playerController.attackDirection == Vector2.down)
+        if (playerAttack.attackDirection == Vector2.down)
         {
             playerController.PerformJumpAttack();
             PlayHitEffect(collision);
         }
     }
 
-    private Vector2 GetDeflectDirection()
+    private bool IsHorizontalAttack()
     {
-        Vector2 deflectDirection;
-        if (playerController.attackDirection == Vector2.down || playerController.attackDirection == Vector2.up)
-        {
-            deflectDirection = playerController.attackDirection;
-        }
-        else
-        {
-            deflectDirection = playerController.mirandoIzqui ? Vector2.left : Vector2.right;
-        }
-
-        return deflectDirection;
+        return playerAttack.attackDirection != Vector2.down && playerAttack.attackDirection != Vector2.up;
     }
 
     private void PlayHitEffect(Collider2D collision)

@@ -6,166 +6,132 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-   
+    public Vector2 moveInput { get; private set; }
+    public bool isFacingLeft { get; private set; }
 
-    #region MOVIMIENTO
-    [Header("MOVIMIENTO")]
-    public Rigidbody2D rb;
-    private PlayerInput playerInput;
-    public float moveForce = 10f;
-    private float moveInput;
-    private float previousMoveInput = 0;
-    public bool mirandoIzqui;
-    [SerializeField] private PlayerLives playerHealthScript;
-    #endregion
 
-    #region SALTO
-    [Header("SALTO")]
-
-    public float jumpForce = 250f;
-    public float multiplierFall = 4f;
+    [HideInInspector] public Rigidbody2D rb;
+    public float moveForce = 6f;
+    public float jumpForce = 10.8f;
+    public float multiplierFall = 3f;
     public float jumpBufferTime = 0.2f;
-    public float maxFallSpeed = -20f;
+    public float maxFallSpeed = -10f;
     public float coyoteTime = 0.1f;
     private float jumpBufferCounter;
     public float coyoteTimeCounter;
     private bool jumpButtonHeld;
     public bool isTouchingGround { get; set; }
-    #endregion
-
-    #region ATAQUE
-    [Header("ATAQUE")]
-
     public Animator playerAnimator;
-    public Vector2 attackDirection;
-    public bool isAttackLaunched;
-    public float attackCD = 0.5f;
-    private float currentAttackCD;
-    private bool upPressed;
-    private bool downPressed;
-    #endregion
-
-    #region OTRAS
-    [Header("OTRAS")]
-
     public Vector3 posicionLastCheckpoint;
     private Vector2 gravityVector;
-    public AnimatorOverrideController[] animatorOverrideController;
     public bool isBeingKnockedBack;
     [HideInInspector] public PlayerLives playerHealth;
+    private PlayerAttack playerAttack;
 
-    #endregion
 
 
     private void Start()
     {
+        playerAttack = GetComponent<PlayerAttack>();
         playerHealth = GetComponent<PlayerLives>();
         isTouchingGround = true;
         rb = GetComponent<Rigidbody2D>();
         gravityVector = new Vector2(0, -Physics2D.gravity.y);
-        playerInput = GetComponent<PlayerInput>();
-       playerAnimator = GetComponent<Animator>();
+        playerAnimator = GetComponent<Animator>();
         posicionLastCheckpoint = transform.position;
     }
 
+    public void Move(InputAction.CallbackContext callBack)
+    {
+        if (callBack.performed)
+        {
+            Vector2 input = callBack.ReadValue<Vector2>();
+            moveInput = new Vector2(Mathf.RoundToInt(input.x), Mathf.RoundToInt(input.y));
+            if(moveInput.x != 0 && !isBeingKnockedBack)
+            {
+                playerAnimator.SetBool("Running", true);
+            }
+        }
+        else if (callBack.canceled)
+        {
+            moveInput = Vector2.zero;
+            playerAnimator.SetBool("Running", false);
+        }
+    }
+   private void UpdateFacingDirection()
+    {
+        if (!isBeingKnockedBack && GameManagerScript.modoJuego == GameMode.Play)
+        {
+            Vector3 localScale = transform.localScale;
+            if (moveInput.x < 0 && !isFacingLeft)
+            {
+                localScale.x = -1;
+                transform.localScale = localScale;
+                isFacingLeft = true;
+            }
+            else if (moveInput.x > 0 && isFacingLeft)
+            {
+                localScale.x = 1;
+                transform.localScale = localScale;
+                isFacingLeft = false;
+            } 
+        }
+    }
     private void Update()
     {
-        
-            float input = playerInput.actions["MOVE"].ReadValue<float>();
-            if (input > 0)
-            {
-                moveInput = 1;
-            }
-            else if (input < 0)
-            {
-                moveInput = -1;
-            }
-            else
-            {
-                moveInput = 0;
-            }
-        if (currentAttackCD > 0)
-        {
-            currentAttackCD -= Time.deltaTime;
-        }
-            // Actualiza el animator solo si el estado de movimiento ha cambiado
-            if (moveInput != previousMoveInput&&!isBeingKnockedBack && GameManagerScript.modoJuego == GameMode.Play)
-            {
-                playerAnimator.SetBool("Running", moveInput != 0);
-                previousMoveInput = moveInput; // Actualiza el estado previo
-                if (moveInput != 0)
-                {
-                    Vector3 newScale = transform.localScale;
-                    newScale.x = moveInput; // Cambia la escala en el eje x para que el jugador mire en la dirección del movimiento
-                    transform.localScale = newScale;
-                    if (moveInput < 0)
-                    {
-                        mirandoIzqui = true;
-                    }
-                    else if (moveInput > 0)
-                    {
-                        mirandoIzqui = false;
-                    }
-                }
-            }
-            if (!isTouchingGround)
-            {
-                coyoteTimeCounter += Time.deltaTime;
-            }
-            else
-            {
-                coyoteTimeCounter = 0;
-            }
+        UpdateFacingDirection();
 
-            if (jumpBufferCounter > 0)
-            {
-                jumpBufferCounter -= Time.deltaTime;
-            }
+        if (!isTouchingGround)
+        {
+            coyoteTimeCounter += Time.deltaTime;
+        }
+        else
+        {
+            coyoteTimeCounter = 0;
+        }
+
+        if (jumpBufferCounter > 0)
+        {
+            jumpBufferCounter -= Time.deltaTime;
+        }
     }
     private void FixedUpdate()
     {
-        playerAnimator.SetFloat("Yvelocity",rb.velocity.y);
+        playerAnimator.SetFloat("Yvelocity", rb.velocity.y);
 
         if (!isBeingKnockedBack)
         {
-            rb.velocity = new Vector2(moveInput * moveForce, rb.velocity.y);
-
+            rb.velocity = new Vector2(moveInput.x * moveForce, rb.velocity.y);
         }
 
         // Aplicar gravedad adicional para una caída más rápida
-        if (rb.velocity.y < 0 || (!jumpButtonHeld && !isAttackLaunched))
-            {
-                rb.velocity -= gravityVector * multiplierFall * Time.deltaTime;
-            }
+        if (rb.velocity.y < 0 || (!jumpButtonHeld && !playerAttack.isAttackLaunched))
+        {
+            rb.velocity -= gravityVector * multiplierFall * Time.deltaTime;
+        }
 
-            // Limitar velocidad de caída
-            if (rb.velocity.y < maxFallSpeed)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, maxFallSpeed);
-            }
+        // Realizar el salto si hay un buffer de salto activo y está dentro del tiempo de coyote
+        if (jumpBufferCounter > 0 && (isTouchingGround || coyoteTimeCounter < coyoteTime))
+        {
+            PerformJump();
+            jumpBufferCounter = 0; // Resetear el buffer de salto después de saltar
+        }
 
-            // Realizar el salto si hay un buffer de salto activo y está dentro del tiempo de coyote
-            if (jumpBufferCounter > 0 && (isTouchingGround || coyoteTimeCounter < coyoteTime))
-            {
-                PerformJump();
-                jumpBufferCounter = 0; // Resetear el buffer de salto después de saltar
-            }
-        
     }
-    
+
     public void ResetSamurai()
     {
         transform.position = posicionLastCheckpoint;
         playerAnimator.SetTrigger("Reset");
-        playerHealthScript.ResetLives();
+        playerHealth.ResetLives();
     }
     public void Jump(InputAction.CallbackContext callBack)
     {
-        if (callBack.performed&&!isBeingKnockedBack)
+        if (callBack.performed && !isBeingKnockedBack)
         {
             if (GameManagerScript.modoJuego == GameMode.Play)
             {
-                jumpButtonHeld = true; 
+                jumpButtonHeld = true;
                 jumpBufferCounter = jumpBufferTime;
             }
         }
@@ -188,11 +154,11 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, actualJumpForce);
             isTouchingGround = false;
             coyoteTimeCounter = coyoteTime; // Resetear el tiempo de coyote
-            isAttackLaunched = false;
+            playerAttack.isAttackLaunched = false;
             SoundsManager.Instance.jumpSound.Play();
-            playerAnimator.SetBool("Jumping", true); 
+            playerAnimator.SetBool("Jumping", true);
         }
-        
+
     }
     public void PerformJumpAttack()
     {
@@ -202,111 +168,18 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             isTouchingGround = false;
             coyoteTimeCounter = coyoteTime; // Resetear el tiempo de coyote
-            isAttackLaunched = true;
+            playerAttack.isAttackLaunched = true;
             SoundsManager.Instance.jumpSound.Play();
-            playerAnimator.SetBool("Jumping", true); 
+            playerAnimator.SetBool("Jumping", true);
         }
-
     }
-  
+
     public void ResetJump()
     {
         rb.velocity = new Vector2(rb.velocity.x, jumpForce * 0.7f);
-        isAttackLaunched = true;
-        
-        //jumpParticles.Play();
-
-
+        playerAttack.isAttackLaunched = true;
     }
 
-    public void StartButton(InputAction.CallbackContext callBack)
-    {
-        if (callBack.started && GameManagerScript.modoJuego == GameMode.Play)
-        {
-            
-
-        }
-        else if (callBack.started && GameManagerScript.modoJuego == GameMode.Play  )
-        {
-
-
-        }
-
-    }
- 
-    public void CerrarJuego()
-    {
-        Application.Quit();
-    }
-
-    public void Attack(InputAction.CallbackContext callBack)
-    {
-        if (callBack.performed && !isBeingKnockedBack && GameManagerScript.modoJuego == GameMode.Play)
-        {
-            
-            if (currentAttackCD <= 0)
-            {
-                if (upPressed)
-                {
-                    playerAnimator.runtimeAnimatorController = animatorOverrideController[1];
-                    attackDirection = Vector2.up;
-                }
-                else if (downPressed&&!isTouchingGround)
-                {
-                    playerAnimator.runtimeAnimatorController = animatorOverrideController[2];
-                    attackDirection = Vector2.down;
-
-
-                }
-                else
-                {
-                    playerAnimator.runtimeAnimatorController = animatorOverrideController[0];
-                    if (mirandoIzqui)
-                    {
-                        attackDirection = Vector2.left;
-
-                    }
-                    else
-                    {
-                        attackDirection = Vector2.right;
-
-                    }
-
-                }
-                playerAnimator.SetTrigger("Attack");
-                currentAttackCD = attackCD;
-                SoundsManager.Instance.playerAttackSound.Play();
-            }
-
-        }
-
-        if (callBack.canceled   )
-        {
-         
-        }
-    }
-    public void Up(InputAction.CallbackContext callBack)
-    {
-        if (callBack.started)
-        {
-            upPressed = true;
-        }
-        if (callBack.canceled)
-        {
-            upPressed = false;
-        }
-    }
-    public void Down(InputAction.CallbackContext callBack)
-    {
-        if (callBack.started)
-        {
-            downPressed = true;
-        }
-        if (callBack.canceled)
-        {
-            downPressed = false;
-        }
-    }
     public void StartKnockUp(Vector2 direction)
     {
         StartCoroutine(KnockUp(direction));
