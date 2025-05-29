@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+# Ignorar ShaderLab y Shader Graph en el análisis de lenguaje
+*.shader linguist-language=ignore
+*.shadergraph linguist-language=ignore
