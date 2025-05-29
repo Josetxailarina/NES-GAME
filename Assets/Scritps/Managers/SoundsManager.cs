@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SoundsManager : MonoBehaviour
@@ -13,6 +11,11 @@ public class SoundsManager : MonoBehaviour
     public AudioSource playerAttackSound;
     public AudioSource jumpSound;
     public AudioSource hitSound;
+    public AudioSource moveMenuSound;
+    public AudioSource confirmMenuSound;
+    public AudioSource fireShotSound;
+    public AudioSource armorHitSound;
+    public AudioSource chargingFireSound;
 
     private void Awake()
     {

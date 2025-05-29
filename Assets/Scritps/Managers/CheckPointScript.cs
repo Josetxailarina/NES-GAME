@@ -3,26 +3,28 @@ using UnityEngine;
 
 public class CheckPointScript : MonoBehaviour
 {
-    private PlayerController playerController;
+    public static Vector3 lastCheckpointPosition;
+
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+
     private AudioSource audioCheck;
     private bool isRaised;
     private Animator anim;
+    private Vector3 checkpointOffSet = new Vector3(0.5f, 0.5f, 0);
 
-    [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
     private void Start()
     {
         anim = GetComponentInChildren<Animator>();
         audioCheck = GetComponent<AudioSource>();   
-        playerController = GameObject.FindGameObjectWithTag("Samurai").GetComponent<PlayerController>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Samurai")&&!isRaised)
+        if (!isRaised)
         {
             anim.SetBool("Up", true);
             audioCheck.Play();
-            playerController.posicionLastCheckpoint = transform.position - new Vector3(0.5f, 0.5f, 0);
+            lastCheckpointPosition = transform.position - checkpointOffSet;
             isRaised = true;
             if (virtualCamera != null)
             {

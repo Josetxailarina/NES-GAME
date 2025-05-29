@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PiesCollider : MonoBehaviour
+public class GroundTrigger : MonoBehaviour
 {
     [SerializeField] private PlayerController controllerScript;
     [SerializeField] private PlayerAttack playerAttack;
@@ -18,7 +18,7 @@ public class PiesCollider : MonoBehaviour
         controllerScript.playerAnimator.SetBool("Jumping",false);
         lastSafePosition = transform.position;
         groundContactSound.Play();
-        playerAttack.isAttackLaunched = false;
+        playerAttack.isPerformingAttackJump = false;
 
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -32,7 +32,7 @@ public class PiesCollider : MonoBehaviour
         {
             controllerScript.rb.velocity = Vector3.zero;
             controllerScript.transform.position = lastSafePosition;
-            controllerScript.playerHealth.TakeDamage(Vector2.zero);
+            controllerScript.playerLivesScript.TakeDamage(Vector2.zero);
         }
     }
 }

@@ -10,11 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 5437592751893909366}
   - component: {fileID: 4200178121349960047}
+  - component: {fileID: 3757679995224740440}
+  - component: {fileID: 7638651349970415046}
   - component: {fileID: 1030218737867695995}
   - component: {fileID: 4437089940256763646}
   - component: {fileID: 6000955114978077709}
   - component: {fileID: 4441230808395482028}
-  - component: {fileID: 7638651349970415046}
   m_Layer: 7
   m_Name: ninja1
   m_TagString: NinjaM
@@ -89,6 +90,42 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3757679995224740440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2474783244645690210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cabd843408f0749408f4ee807e07769b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpCooldown: 1.2
+  moveDistance: 1
+  knockbackForce: 3
+  speed: 2
+  jumpForce: 4
+--- !u!114 &7638651349970415046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2474783244645690210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9751e99782b20346909ca9f97a2a74f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHealth: 3
+  damageTintColor: {r: 1, g: 1, b: 1, a: 1}
+  playerAttack: {fileID: 0}
+  isVisible: 1
+  shotCooldown: 1
+  lanzadorSurikens: {fileID: 0}
+  startPosition: {x: 0, y: 0, z: 0}
 --- !u!61 &1030218737867695995
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -227,27 +264,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.58737004, y: 0.7940674}
   m_EdgeRadius: 0
---- !u!114 &7638651349970415046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2474783244645690210}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9751e99782b20346909ca9f97a2a74f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentHealth: 3
-  damageEffectAnim: {fileID: 0}
-  damageTintColor: {r: 1, g: 1, b: 1, a: 1}
-  explosionEffect: {fileID: 0}
-  dieSound: {fileID: 0}
-  hitSound: {fileID: 0}
-  speed: 2
-  jumpForce: 4
-  throwInterval: 0.8
-  jumpInterval: 1
-  moveDistance: 1
-  knockbackForce: 3

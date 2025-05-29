@@ -8,10 +8,10 @@ public enum GameMode
 }
 public class GameManagerScript : MonoBehaviour
 {
-    public static GameMode modoJuego;
+    public static GameMode gameMode;
 
     void Start()
     {
-        modoJuego = GameMode.Play;
+        gameMode = GameMode.Play;
     }
 }

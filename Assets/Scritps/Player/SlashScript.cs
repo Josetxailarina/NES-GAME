@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class SlashScript : MonoBehaviour
 {
-    [SerializeField] private Animator hitEffectAnimator;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PlayerAttack playerAttack;
 
@@ -14,9 +13,8 @@ public class SlashScript : MonoBehaviour
 
         if (deflectable != null)
         {
-            PlayHitEffect(collision);
-            Vector2 deflectDirection = playerAttack.attackDirection;
-            deflectable.Deflect(deflectDirection);
+            EffectsManager.Instance.PlayHitEffect(collision.transform.position, playerAttack.attackDirection);
+            deflectable.Deflect(playerAttack.attackDirection);
         }
 
         else if (damagable != null)
@@ -42,7 +40,7 @@ public class SlashScript : MonoBehaviour
         if (playerAttack.attackDirection == Vector2.down)
         {
             playerController.PerformJumpAttack();
-            PlayHitEffect(collision);
+            EffectsManager.Instance.PlayHitEffect(collision.transform.position, playerAttack.attackDirection);
         }
     }
 
@@ -51,10 +49,5 @@ public class SlashScript : MonoBehaviour
         return playerAttack.attackDirection != Vector2.down && playerAttack.attackDirection != Vector2.up;
     }
 
-    private void PlayHitEffect(Collider2D collision)
-    {
-        hitEffectAnimator.transform.position = collision.transform.position;
-        hitEffectAnimator.transform.rotation = transform.rotation;
-        hitEffectAnimator.SetTrigger("Hit");
-    }
+    
 }

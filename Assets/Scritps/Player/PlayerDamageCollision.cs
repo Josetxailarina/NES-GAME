@@ -1,16 +1,13 @@
 using UnityEngine;
 
-public class DamageScript : MonoBehaviour
+public class PlayerDamageCollision : MonoBehaviour
 {
     [SerializeField] private PlayerLives playerHealth;
-    [SerializeField] private Animator hitEffectAnim;
     private int knockUpMultiplier;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!playerHealth.isFlashing)
         {
-            hitEffectAnim.transform.position = playerHealth.transform.position;
-            hitEffectAnim.SetTrigger("Hit");
             HandlePlayerDamage(collision);
         }
     }

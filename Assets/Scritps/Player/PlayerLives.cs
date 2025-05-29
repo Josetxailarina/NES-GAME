@@ -1,18 +1,21 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerLives : MonoBehaviour
+public class PlayerLives : MonoBehaviour, IDamagable
 {
-    [SerializeField] private int currentLives = 3;
+    [SerializeField] private int maxLives = 3;
     [SerializeField] private Sprite[] livesNumberSprites;
     [SerializeField] private SpriteRenderer livesDisplayRenderer;
     [SerializeField] private GameOverMenu gameOverScript;
     [HideInInspector] public bool isFlashing;
     private SpriteRenderer playerSprite;
     private PlayerController playerController;
+    private int currentLives;
+
 
     private void Start()
     {
+        currentLives = maxLives;
         playerSprite = GetComponent<SpriteRenderer>();
         playerController = GetComponent<PlayerController>();
     }
@@ -22,6 +25,7 @@ public class PlayerLives : MonoBehaviour
         currentLives--;
         livesDisplayRenderer.sprite = livesNumberSprites[currentLives];
         SoundsManager.Instance.playerDamageSound.Play();
+        EffectsManager.Instance.PlayRedHitEffect(transform.position, direccion);
 
         if (currentLives > 0)
         {
@@ -47,12 +51,12 @@ public class PlayerLives : MonoBehaviour
         Time.timeScale = 0;
         SoundsManager.Instance.backgroundMusic.Stop();
         SoundsManager.Instance.gameOverMusic.Play();
-        GameManagerScript.modoJuego = GameMode.GameOver;
+        GameManagerScript.gameMode = GameMode.GameOver;
 
         yield return new WaitForSecondsRealtime(1.7f);
 
         gameOverScript.gameObject.SetActive(true);
-        GameManagerScript.modoJuego = GameMode.Menu;
+        GameManagerScript.gameMode = GameMode.Menu;
     }
 
     public IEnumerator FlashDamageEffect(Vector2 direccion)

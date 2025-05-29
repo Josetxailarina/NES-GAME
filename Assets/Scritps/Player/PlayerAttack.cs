@@ -1,16 +1,16 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerAttack : MonoBehaviour
 {
     [HideInInspector] public Vector2 attackDirection { get; private set; }
-    [HideInInspector] public bool isAttackLaunched;
+    [HideInInspector] public bool isPerformingAttackJump;
 
     private float currentAttackCD;
     private PlayerController playerController;
     private Animator playerAnimator;
-    [SerializeField] private float attackCD = 0.5f;
+
+    [SerializeField] private float attackCD = 0.2f;
 
 
 
@@ -22,14 +22,14 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
-        if (currentAttackCD > 0)
-        {
-            currentAttackCD -= Time.deltaTime;
-        }
+        HandleAttackCooldown();
     }
+
+
+    //Called by Input System 
     public void Attack(InputAction.CallbackContext callBack)
     {
-        if (callBack.performed && GameManagerScript.modoJuego == GameMode.Play && currentAttackCD <= 0)
+        if (callBack.performed && GameManagerScript.gameMode == GameMode.Play && currentAttackCD <= 0)
         {
             HandleAttackDirection();
             playerAnimator.SetTrigger("Attack");
@@ -61,6 +61,13 @@ public class PlayerAttack : MonoBehaviour
             {
                 attackDirection = Vector2.right;
             }
+        }
+    }
+    private void HandleAttackCooldown()
+    {
+        if (currentAttackCD > 0)
+        {
+            currentAttackCD -= Time.deltaTime;
         }
     }
 }
